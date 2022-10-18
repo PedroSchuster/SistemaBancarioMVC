@@ -12,7 +12,7 @@ class Conta:
     def numero(self):
         return self.__numero
         
-     @numero.setter
+    @numero.setter
     def numero(self, novo_numero):
         self.__numero = novo_numero
             
