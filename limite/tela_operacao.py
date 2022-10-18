@@ -8,9 +8,6 @@ class TelaOperacao(Tela):
     def mostrar_mensagem(self, mensagens):
         return super().mostrar_mensagem(mensagens)
     
-    def selecionar_conta(self):
-        pass
-        
     def tela_opcoes(self):
         print("*"*10)
         print("1 - Transação")
@@ -22,5 +19,14 @@ class TelaOperacao(Tela):
         opcao = self.verifica_opcao("ESCOLHA UMA OPÇÃO: ", [1,2,3,4,0])
         return opcao
     
+    def selecionar_conta(self):
+        return input("Digite o numero da conta de origigem: ")
+        
+    def pegar_dado_saque(self):
+        return float(input("Digite o valor a ser sacado: "))
+    
     def pegar_dados_operacao():
-        pass
+        dados_operacao = {}
+        dados_operacao["conta_destino" : int(input("Digite o numero da conta de destino: "))]
+        dados_operacao["valor" : float(input("Digite o valor a ser transferido: "))]
+        return dados_operacao
