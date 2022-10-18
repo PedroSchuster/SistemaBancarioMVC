@@ -1,8 +1,8 @@
 import sys
 from controlador_conta import ControladorConta
 from controlador_operacao import ControladorOperacao
-from Excecoes.valor_invalido_exception import ValorInvalidoException
-from Limite.tela_sistema import TelaSistema
+from excecoes.valor_invalido_exception import ValorInvalidoException
+from limite.tela_sistema import TelaSistema
 
 class ControladorSistema:
     def __init__(self) -> None:

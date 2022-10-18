@@ -1,5 +1,4 @@
-from excecoes.valor_invalido_exception import ValorInvalidoException
-from tela import Tela
+from limite.tela import Tela
 
 
 class TelaConta(Tela):

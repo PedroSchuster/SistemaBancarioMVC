@@ -1,6 +1,6 @@
 {
     "python.testing.pytestArgs": [
-        "controle"
+        "limite"
     ],
     "python.testing.unittestEnabled": false,
     "python.testing.pytestEnabled": true
