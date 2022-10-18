@@ -8,12 +8,12 @@ class ControladorConta:
     
     def __init__(self, controlador_sistema) -> None:
         self.__controlador_sistema = controlador_sistema
-        self.__tela_conta = TelaConta
+        self.__tela_conta = TelaConta()
         self.__contas = []
         
     
     def incluir_conta(self):
-        dados_conta = self.__tela_conta.pegar_dados_conta
+        dados_conta = self.__tela_conta.pegar_dados_conta()
         conta = Conta(dados_conta[0],dados_conta[1],
                       dados_conta[2],dados_conta[3])
         
@@ -25,18 +25,18 @@ class ControladorConta:
         
     
     def alterar_conta(self):
-        numero_conta = self.__tela_conta.buscar_conta
+        numero_conta = self.__tela_conta.buscar_conta()
         conta = self.pegar_contar_por_numero(numero_conta)
         if (not conta):
             raise ValorInvalidoException()
         else:
-            dados_conta = self.__tela_conta.pegar_dados_conta
+            dados_conta = self.__tela_conta.pegar_dados_conta()
             conta = Conta(dados_conta[0],dados_conta[1],
                         dados_conta[2],dados_conta[3])
             return self.__tela_conta.mostrar_mensagem(["Conta alterada com sucesso!"])
     
     def excluir_conta(self):
-        numero_conta = self.__tela_conta.buscar_conta
+        numero_conta = self.__tela_conta.buscar_conta()
         conta = self.pegar_contar_por_numero(numero_conta)
         if (not conta):
             raise ValorInvalidoException()      
@@ -68,10 +68,10 @@ class ControladorConta:
         conta.operacoes.append(operacao)
         
     def abre_tela(self):
-        opcoes = {1:self.cadastrar_contas, 2:self.abrir_operacoes}
+        opcoes = {1:self.incluir_conta, 2:self.alterar_conta, 3: self.excluir_conta, 4: self.listar_contas}
         while True:
             try:
-                opcao = self.__tela_conta.tela_opcoes
+                opcao = self.__tela_conta.tela_opcoes()
                 
                 if opcao == 0:
                     break

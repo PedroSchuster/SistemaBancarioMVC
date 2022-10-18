@@ -7,10 +7,10 @@ class TelaConta(Tela):
     
     def tela_opcoes(self):
         print("*"*10)
-        print("1 - Cadastrar cliente")
+        print("1 - Cadastrar conta")
         print("2 - Alterar cadastro")
         print("3 - Excluir cadastro")
-        print("4 - Listar clientes")
+        print("4 - Listar contas")
         print("0 - Retornar")
         opcao = self.verifica_opcao("ESCOLHA UMA OPÇÃO: ", [1,2,3,4,0])
         return opcao  
