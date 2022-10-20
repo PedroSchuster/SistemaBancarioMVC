@@ -17,18 +17,25 @@ class TelaConta(Tela):
     
     
     def mostrar_conta(self, dados_conta):
+        print("-"*10)
         for i in dados_conta:
-            for k,v in i:
+            for k,v in i.items():
                 print(k, ": ", v)
             print("-"*10)
 
-    def pegar_dados_conta():
-        pass
+    def pegar_dados_conta(self):
+        dados_conta = []
+        dados_conta.append(int(input("Digite o numero da conta: ")))
+        dados_conta.append(input("Digite o tipo da conta: "))
+        dados_conta.append(input("Digite o nome do cliente: "))
+        dados_conta.append(input("Digite o nome do funcionario: "))
+        return dados_conta
+        
     
-    def buscar_conta():
+    def buscar_conta(self):
         return int(input(("Digite o número da conta: ")))
         
-    def mostrar_mensagem(mensagens):
+    def mostrar_mensagem(self,mensagens):
         return super().mostrar_mensagem(mensagens)
     
     
