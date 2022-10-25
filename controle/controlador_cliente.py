@@ -55,5 +55,6 @@ class ControladorCliente:
                         0: self.retornar}
                 
         continua = True
+        
         while continua:
             lista_opcoes[self.__tela_cliente.tela_opcoes()]()

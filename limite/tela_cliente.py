@@ -9,7 +9,7 @@ class TelaCliente(Tela):
         print("3 -  Listar  clientes")
         print("4 -  Buscar  um cliente")
         print("0 -  Voltar")
-        opcao = self.verifica_opcao("Escolha a opcao: ", [1, 2, 3, 4, 0])
+        opcao = self.verifica_opcao("Escolha uma opcão: ", [1, 2, 3, 4, 0])
         return opcao
 
     def pega_dados_cliente(self):

@@ -1,8 +1,8 @@
 import sys
-from controlador_cliente import ControladorCliente
-from controlador_funcionario import ControladorFuncionario
-from controlador_conta import ControladorConta
-from controlador_operacao import ControladorOperacao
+from controle.controlador_cliente import ControladorCliente
+from controle.controlador_funcionario import ControladorFuncionario
+from controle.controlador_conta import ControladorConta
+from controle.controlador_operacao import ControladorOperacao
 from excecoes.valor_invalido_exception import ValorInvalidoException
 from limite.tela_sistema import TelaSistema
 
@@ -10,8 +10,8 @@ class ControladorSistema:
     def __init__(self) -> None:
         self.__controlador_operacao = ControladorOperacao(self)
         self.__controlador_conta = ControladorConta(self)
-        self.__controlador_cliente = ControladorCliente()
-        self.__controlador_funcionario = ControladorFuncionario()
+        self.__controlador_cliente = ControladorCliente(self)
+        self.__controlador_funcionario = ControladorFuncionario(self)
         self.__tela = TelaSistema()
     
     @property 

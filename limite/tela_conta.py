@@ -12,7 +12,7 @@ class TelaConta(Tela):
         print("3 - Excluir cadastro")
         print("4 - Listar contas")
         print("0 - Retornar")
-        opcao = self.verifica_opcao("ESCOLHA UMA OPÇÃO: ", [1,2,3,4,0])
+        opcao = self.verifica_opcao("Escolhe uma opção: ", [1,2,3,4,0])
         return opcao  
     
     

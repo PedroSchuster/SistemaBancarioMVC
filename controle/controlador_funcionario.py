@@ -27,7 +27,7 @@ class ControladorFuncionario:
             dados_funcionario["matricula"]
         )
 
-        self.__funcionarios.append(funcionario)
+        self.__funcionario.append(funcionario)
 
     def excluir_funcionario(self):
         self.lista_funcionario()

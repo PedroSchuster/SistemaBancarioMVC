@@ -13,7 +13,7 @@ class TelaSistema(Tela):
         print("3 - Conta")
         print("4 - Operações")
         print("0 - Encerrar")
-        opcao = self.verifica_opcao("ESCOLHA UMA OPÇÃO: ", [1,2,3,4,0])
+        opcao = self.verifica_opcao("Escolhe uma opção: ", [1,2,3,4,0])
         return opcao
     
     def mostrar_mensagem(self,mensagens):

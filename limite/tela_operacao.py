@@ -16,7 +16,7 @@ class TelaOperacao(Tela):
         print("4 - Extrato")
         print("5 - Saldo")
         print("0 - Encerrar")
-        opcao = self.verifica_opcao("ESCOLHA UMA OPÇÃO: ", [1,2,3,4,5,0])
+        opcao = self.verifica_opcao("Escolhe uma opção: ", [1,2,3,4,5,0])
         return opcao
     
     def selecionar_conta(self):
