@@ -32,7 +32,7 @@ class ControladorConta:
         
         self.__tela_conta.mostrar_mensagem(["Novos dados da conta: "])
         dados_conta = self.__tela_conta.pegar_dados_conta()
-        self.__contas[conta] = Conta(dados_conta[0],dados_conta[1],
+        self.__contas[self.__contas.index(conta)] = Conta(dados_conta[0],dados_conta[1],
         dados_conta[2],dados_conta[3])
         return self.__tela_conta.mostrar_mensagem(["Conta alterada com sucesso!"])
     
@@ -41,7 +41,7 @@ class ControladorConta:
         conta = self.pegar_contar_por_numero(numero_conta)
         if (conta == None):
             raise CadastroException("Conta não encontrada")   
-        self.__contas.pop(conta)
+        self.__contas.pop(self.__contas.index(conta))
         return self.__tela_conta.mostrar_mensagem(["Conta excluida com sucesso!"])
                 
     
@@ -61,12 +61,11 @@ class ControladorConta:
         if self.__contas:
             for i in self.__contas:
                 if i.numero == numero:
-                    return self.__contas.index(i)
+                    return i
         return None
         
     
-    def registrar_operacao(self,num_conta, operacao):
-        conta = self.pegar_contar_por_numero(num_conta)
+    def registrar_operacao(self,conta, operacao):
         conta.operacoes.append(operacao)
         
     def abre_tela(self):
@@ -80,6 +79,8 @@ class ControladorConta:
 
                 opcoes[opcao]() 
            
+            except ValueError:
+                self.__tela_conta.mostrar_mensagem(["Valor inválido, digite um número inteiro"])
             except ValorInvalidoException as e:
                 self.__tela_conta.mostrar_mensagem([e.mensagem])
             except CadastroException as e:

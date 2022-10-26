@@ -26,8 +26,10 @@ class ControladorSistema:
                 if opcao == 0:
                     sys.exit()
                     
-                opcoes[opcao]()        
-            
+                opcoes[opcao]()    
+                    
+            except ValueError:
+                self.__tela_conta.mostrar_mensagem(["Valor inválido, digite um número inteiro"])
             except ValorInvalidoException as e:
                 self.__tela.mostrar_mensagem([e.mensagem])
                 

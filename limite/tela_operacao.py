@@ -15,19 +15,16 @@ class TelaOperacao(Tela):
         print("3 - Deposito")
         print("4 - Extrato")
         print("5 - Saldo")
-        print("0 - Encerrar")
+        print("0 - Retornar")
         opcao = self.verifica_opcao("Escolhe uma opção: ", [1,2,3,4,5,0])
         return opcao
     
     def selecionar_conta(self):
-        return input("Digite o numero da conta: ")
+        return int(input("Digite o numero da conta: "))
     
-    def pegar_dado_saque(self):
-        return input("Digite o valor a ser sacado")
+    def pegar_valor(self):
+        return float(input("Digite o valor: "))
     
     
-    def pegar_dados_operacao(self):
-        dados_operacao = {}
-        dados_operacao["conta_destino" : int(input("Digite o numero da conta de destino: "))]
-        dados_operacao["valor" : float(input("Digite o valor a ser transferido: "))]
-        return dados_operacao
+    def selecionar_conta_destino(self):
+        return int(input("Digite o numero da conta de destino: "))
