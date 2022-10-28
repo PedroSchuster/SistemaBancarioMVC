@@ -13,6 +13,5 @@ class Tela(ABC):
                 raise ValorInvalidoException(valor_inserido)
             
     
-    def mostrar_mensagem(self,mensagens):
-        for i in mensagens:
-            print(i)
+    def mostrar_mensagem(self,mensagem):
+        print(mensagem)

@@ -30,11 +30,11 @@ class ControladorConta:
         if (conta == None):
             raise CadastroException("Conta não encontrada")      
         
-        self.__tela_conta.mostrar_mensagem(["Novos dados da conta: "])
+        self.__tela_conta.mostrar_mensagem("Novos dados da conta: ")
         dados_conta = self.__tela_conta.pegar_dados_conta()
         self.__contas[self.__contas.index(conta)] = Conta(dados_conta[0],dados_conta[1],
         dados_conta[2],dados_conta[3])
-        return self.__tela_conta.mostrar_mensagem(["Conta alterada com sucesso!"])
+        return self.__tela_conta.mostrar_mensagem("Conta alterada com sucesso!")
     
     def excluir_conta(self):
         numero_conta = self.__tela_conta.buscar_conta()
@@ -42,7 +42,7 @@ class ControladorConta:
         if (conta == None):
             raise CadastroException("Conta não encontrada")   
         self.__contas.pop(self.__contas.index(conta))
-        return self.__tela_conta.mostrar_mensagem(["Conta excluida com sucesso!"])
+        return self.__tela_conta.mostrar_mensagem("Conta excluida com sucesso!")
                 
     
     def listar_contas(self):
@@ -54,7 +54,7 @@ class ControladorConta:
             raise CadastroException("Nenhuma conta cadastrada")      
 
             
-        self.__tela_conta.mostrar_mensagem(["Lista das contas: "])
+        self.__tela_conta.mostrar_mensagem("Lista das contas: ")
         return self.__tela_conta.mostrar_conta(lista)
     
     def pegar_contar_por_numero(self, numero):
@@ -80,11 +80,11 @@ class ControladorConta:
                 opcoes[opcao]() 
            
             except ValueError:
-                self.__tela_conta.mostrar_mensagem(["Valor inválido, digite um número inteiro"])
+                self.__tela_conta.mostrar_mensagem("Valor inválido, digite um número inteiro")
             except ValorInvalidoException as e:
-                self.__tela_conta.mostrar_mensagem([e.mensagem])
+                self.__tela_conta.mostrar_mensagem(e.mensagem)
             except CadastroException as e:
-                self.__tela_conta.mostrar_mensagem([e.mensagem])  
+                self.__tela_conta.mostrar_mensagem(e.mensagem)  
 
     
     

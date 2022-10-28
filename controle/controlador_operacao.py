@@ -31,8 +31,11 @@ class ControladorOperacao:
         conta_origem.saldo -= valor
         conta_destino.saldo += valor
         
-        self.__tela.mostrar_mensagem(["Transacao feito com sucesso!", f"Novo saldo da conta {conta_origem.numero} é {conta_origem.saldo}"])
-        self.__tela.mostrar_mensagem(["Transacao feito com sucesso!", f"Novo saldo da conta {conta_destino.numero} é {conta_destino.saldo}"])
+        self.__tela.mostrar_mensagem("Transacao feito com sucesso!", end=" ")
+        self.__tela.mostrar_mensagem(f"Novo saldo da conta {conta_origem.numero} é {conta_origem.saldo}")
+        
+        self.__tela.mostrar_mensagem("Transacao feito com sucesso!", end=" ")
+        self.__tela.mostrar_mensagem(f"Novo saldo da conta {conta_destino.numero} é {conta_destino.saldo}")
     
     def saque(self):
         conta_origem = self.__controlador_sistema.controlador_conta.pegar_contar_por_numero(self.__tela.selecionar_conta())
@@ -42,15 +45,17 @@ class ControladorOperacao:
             raise ValorInvalidoException(valor)
         
         conta_origem.saldo -= valor 
-        self.__tela.mostrar_mensagem(["Saque feito com sucesso!", f"Novo saldo da conta {conta_origem.numero} é {conta_origem.saldo}"])
+
+        self.__tela.mostrar_mensagem("Saque feito com sucesso!", end=" ")
+        self.__tela.mostrar_mensagem(f"Novo saldo da conta {conta_origem.numero} é {conta_origem.saldo}")
     
     def deposito(self):
         conta_origem = self.__controlador_sistema.controlador_conta.pegar_contar_por_numero(self.__tela.selecionar_conta())
         valor = self.__tela.pegar_valor()
         
         conta_origem.saldo += valor 
-        self.__tela.mostrar_mensagem(["Depósito feito com sucesso!", f"Novo saldo da conta {conta_origem.numero} é {conta_origem.saldo}"])
-        
+        self.__tela.mostrar_mensagem("Depósito feito com sucesso!",end=" ")
+        self.__tela.mostrar_mensagem(f"Novo saldo da conta {conta_origem.numero} é {conta_origem.saldo}")
     
     def abre_tela(self):
         opcoes = {1:self.transacao, 2: self.saque, 3: self.deposito}

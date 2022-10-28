@@ -45,6 +45,3 @@ class ControladorSistema:
     def abrir_operacoes(self):
         self.__controlador_operacao.abre_tela()
         
-iniciar = ControladorSistema()
-iniciar.inicializa_sistema()
-        
