@@ -3,7 +3,6 @@ from excecoes.valor_invalido_exception import ValorInvalidoException
 
 class Tela(ABC):
     
-    
     def verifica_opcao(self,mensagem, inteiros_validos):
         while True:
             valor_inserido = int(input(mensagem))
@@ -15,3 +14,6 @@ class Tela(ABC):
     
     def mostrar_mensagem(self,mensagem):
         print(mensagem)
+
+    def tela_opcoes(self):
+        return self.mostrar_mensagem("Tela não encontrada")

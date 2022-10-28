@@ -14,10 +14,18 @@ class ControladorSistema:
         self.__controlador_funcionario = ControladorFuncionario(self)
         self.__tela = TelaSistema()
     
-    @property 
+    @property
     def controlador_conta(self):
         return self.__controlador_conta
+
+    @property
+    def controlador_cliente(self):
+        return self.__controlador_cliente
     
+    @property 
+    def controlador_funcionario(self):
+        return self.__controlador_funcionario
+
     def inicializa_sistema(self):
         opcoes = {1:self.cadastrar_clientes, 2:self.cadastrar_funcionarios, 3 : self.cadastrar_contas, 4: self.abrir_operacoes}
         while True:
@@ -29,9 +37,9 @@ class ControladorSistema:
                 opcoes[opcao]()    
                     
             except ValueError:
-                self.__tela_conta.mostrar_mensagem(["Valor inválido, digite um número inteiro"])
+                self.__tela_conta.mostrar_mensagem("Valor inválido, digite um número inteiro")
             except ValorInvalidoException as e:
-                self.__tela.mostrar_mensagem([e.mensagem])
+                self.__tela.mostrar_mensagem(e.mensagem)
                 
     def cadastrar_contas(self):
         self.__controlador_conta.abre_tela()

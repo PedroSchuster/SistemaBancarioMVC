@@ -25,6 +25,16 @@ class TelaOperacao(Tela):
     def pegar_valor(self):
         return float(input("Digite o valor: "))
     
-    
     def selecionar_conta_destino(self):
         return int(input("Digite o numero da conta de destino: "))
+    
+    def mostrar_saldo(self, conta):
+        print(f"Saldo: {conta.saldo}")
+
+    def mostrar_extrato(self, dados_extrato):
+        print("-"*10)
+        for i in dados_extrato:
+            print(f"Tipo {i.tipo.name.capitalize()}")
+            print(f"Valor: {i.valor}")
+            print(f"Data: {i.data_operacao.strftime('%d/%m/%Y %H:%M')}")
+            print("-"*10)
