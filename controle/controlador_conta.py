@@ -3,7 +3,6 @@ from excecoes.cadastro_exception import CadastroException
 from entidade.conta import Conta
 from limite.tela_conta import TelaConta
 
-
 class ControladorConta:
     
     def __init__(self, controlador_sistema) -> None:
@@ -14,7 +13,8 @@ class ControladorConta:
     
     def incluir_conta(self):
         dados_conta = self.__tela_conta.pegar_dados_conta()
-        conta = Conta(dados_conta[0],dados_conta[1],
+        
+        conta = Conta(dados_conta[0], dados_conta[1],
                       dados_conta[2],dados_conta[3])
         
         if (self.pegar_contar_por_numero(conta.numero)):
@@ -30,11 +30,11 @@ class ControladorConta:
         if (conta == None):
             raise CadastroException("Conta não encontrada")      
         
-        self.__tela_conta.mostrar_mensagem(["Novos dados da conta: "])
+        self.__tela_conta.mostrar_mensagem("Novos dados da conta: ")
         dados_conta = self.__tela_conta.pegar_dados_conta()
         self.__contas[self.__contas.index(conta)] = Conta(dados_conta[0],dados_conta[1],
         dados_conta[2],dados_conta[3])
-        return self.__tela_conta.mostrar_mensagem(["Conta alterada com sucesso!"])
+        return self.__tela_conta.mostrar_mensagem("Conta alterada com sucesso!")
     
     def excluir_conta(self):
         numero_conta = self.__tela_conta.buscar_conta()
@@ -42,20 +42,16 @@ class ControladorConta:
         if (conta == None):
             raise CadastroException("Conta não encontrada")   
         self.__contas.pop(self.__contas.index(conta))
-        return self.__tela_conta.mostrar_mensagem(["Conta excluida com sucesso!"])
+        return self.__tela_conta.mostrar_mensagem("Conta excluida com sucesso!")
                 
     
     def listar_contas(self):
-        lista = []
         if (self.__contas):
-            for i in self.__contas:
-                lista.append({"Cliente" : i.cliente, "Numero da conta" : str(i.numero),"Saldo":i.saldo})
+            self.__tela_conta.mostrar_mensagem("Lista das contas: ")
+            return self.__tela_conta.mostrar_conta(self.__contas)
         else:
             raise CadastroException("Nenhuma conta cadastrada")      
 
-            
-        self.__tela_conta.mostrar_mensagem(["Lista das contas: "])
-        return self.__tela_conta.mostrar_conta(lista)
     
     def pegar_contar_por_numero(self, numero):
         if self.__contas:
@@ -80,11 +76,14 @@ class ControladorConta:
                 opcoes[opcao]() 
            
             except ValueError:
-                self.__tela_conta.mostrar_mensagem(["Valor inválido, digite um número inteiro"])
+                self.__tela_conta.mostrar_mensagem("Valor inválido, digite um número inteiro")
+            except AttributeError:
+                self.__tela_conta.mostrar_mensagem("Tipo de conta não encontrado!")
             except ValorInvalidoException as e:
-                self.__tela_conta.mostrar_mensagem([e.mensagem])
+                self.__tela_conta.mostrar_mensagem(e.mensagem)
             except CadastroException as e:
-                self.__tela_conta.mostrar_mensagem([e.mensagem])  
+                self.__tela_conta.mostrar_mensagem(e.mensagem)  
+            
 
     
     
