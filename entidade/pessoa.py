@@ -9,7 +9,7 @@ class Pessoa(ABC):
             self.__nome = nome
 
         if isinstance(cpf, int):
-            self.__nome = nome
+            self.__cpf = cpf
 
         if isinstance(telefone, int):
             self.__telefone = telefone

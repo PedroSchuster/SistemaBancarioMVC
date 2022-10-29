@@ -17,8 +17,8 @@ class TelaFuncionario(Tela):
         print("-------- DADOS FUNCIONARIO ----------")
         cpf = int(input("cpf: "))
         nome = input("nome: ")
-        telefone = int(input("telefone"))
-        matricula = int(input("matricula"))
+        telefone = int(input("telefone:"))
+        matricula = int(input("matricula:"))
 
         return {"cpf": cpf, "nome": nome, "telefone": telefone, "matricula": matricula}
 

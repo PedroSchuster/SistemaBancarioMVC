@@ -34,8 +34,13 @@ class ControladorCliente:
             self.lista_clientes()
         else:
             self.__tela_cliente.mostra_mensagem("cliente nã existente")
+
+    def lista_cliente(self):
+        for cliente in self.__cliente:
+            self.__tela_cliente.mostra_cliente(
+                {"nome": cliente.nome, "telefone": cliente.telefone, "cpf": cliente.cpf, "idade": cliente.idade})
     
-    def exluir_cliente(self):
+    def excluir_cliente(self):
         self.lista_cliente()
         cpf_cliente = self.__tela_cliente.seleciona_cliente()
         cliente = self.pega._cliente_por_cpf(cpf_cliente)
@@ -55,6 +60,6 @@ class ControladorCliente:
                         0: self.retornar}
                 
         continua = True
-        
+
         while continua:
             lista_opcoes[self.__tela_cliente.tela_opcoes()]()
