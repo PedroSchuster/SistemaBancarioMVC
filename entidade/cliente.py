@@ -6,7 +6,7 @@ class Cliente(Pessoa):
     def __init__(self, nome: str, cpf: int, telefone: int, idade: int):
         if not isinstance(nome, str):
             raise Exception(" Nome inválido! Digite apenas letras! ")
-        if not isinstance(cpf, int):
+        if not isinstance(cpf, str):
             raise Exception(" Cpf inválido! Digite apenas números! ")
         if not isinstance(telefone, int):
             raise Exception(" Telefone inválido! Digite apenas números! ")
@@ -16,6 +16,9 @@ class Cliente(Pessoa):
         super().__init__(nome, cpf, telefone)
         if isinstance(idade, int):
             self.__idade = idade
+
+        self.contas = []
+        self.enderecos = []
 
     @property
     def idade(self) -> int:
