@@ -1,5 +1,7 @@
 from datetime import datetime
+from enums.tipo_conta import TipoConta
 from enums.tipo_operacao import TipoOperacao
+from excecoes.saldo_insuficiente_exception import SaldoInsuficienteException
 from limite.tela_operacao import TelaOperacao
 from excecoes.valor_invalido_exception import ValorInvalidoException
 from excecoes.cadastro_exception import CadastroException
@@ -12,19 +14,28 @@ class ControladorOperacao:
     
     def transacao(self):
         conta_origem = self.__controlador_sistema.controlador_conta.pegar_contar_por_numero(self.__tela.selecionar_conta())
-         
-        conta_destino = self.__controlador_sistema.controlador_conta.pegar_contar_por_numero(self.__tela.selecionar_conta_destino())
-        valor = self.__tela.pegar_valor()
         
         if (not conta_origem):
             raise CadastroException("Conta de origem não encontrada")
-        elif (not conta_destino):
-            raise CadastroException("Conta de origem não encontrada")
-        elif (valor > conta_origem.saldo):
-            raise ValorInvalidoException(valor)
+        elif (conta_origem.tipo == TipoConta.poupanca):
+            raise CadastroException("Não é possivel fazer transações com conta do tipo poupança")
+
+        conta_destino = self.__controlador_sistema.controlador_conta.pegar_contar_por_numero(self.__tela.selecionar_conta_destino())
         
-        operacao_origem = Operacao(datetime.now(), getattr(TipoOperacao, "transacao"), -valor)
-        operacao_destino = Operacao(datetime.now(), getattr(TipoOperacao, "transacao"), valor)
+        if (not conta_destino):
+            raise CadastroException("Conta de destino não encontrada")
+        elif (conta_destino.tipo == TipoConta.poupanca):
+            raise CadastroException("Não é possivel fazer transações com conta do tipo poupança")
+        elif (conta_origem.numero == conta_destino.numero):
+            raise CadastroException("Não é possivel fazer transações entre duas contas iguais")
+        
+        valor = self.__tela.pegar_valor()
+       
+        if (valor > conta_origem.saldo):
+            raise SaldoInsuficienteException(conta_origem.numero)
+        
+        operacao_origem = Operacao(datetime.now(), TipoOperacao.transacao, -valor)
+        operacao_destino = Operacao(datetime.now(), TipoOperacao.transacao, valor)
         
         conta_origem.operacoes.append(operacao_origem)
         conta_destino.operacoes.append(operacao_destino)
@@ -38,12 +49,16 @@ class ControladorOperacao:
     
     def saque(self):
         conta_origem = self.__controlador_sistema.controlador_conta.pegar_contar_por_numero(self.__tela.selecionar_conta())
+
+        if (not conta_origem):
+            raise CadastroException("Conta de origem não encontrada")
+
         valor = self.__tela.pegar_valor()
-        
+
         if (valor > conta_origem.saldo):
-            raise ValorInvalidoException(valor)
+            raise SaldoInsuficienteException(conta_origem.numero)
         
-        operacao_origem = Operacao(datetime.now(), getattr(TipoOperacao, "saque"), -valor)
+        operacao_origem = Operacao(datetime.now(), TipoOperacao.saque, -valor)
         conta_origem.operacoes.append(operacao_origem)
 
         conta_origem.saldo -= valor 
@@ -53,9 +68,13 @@ class ControladorOperacao:
     
     def deposito(self):
         conta_origem = self.__controlador_sistema.controlador_conta.pegar_contar_por_numero(self.__tela.selecionar_conta())
+
+        if (not conta_origem):
+            raise CadastroException("Conta de origem não encontrada")
+
         valor = self.__tela.pegar_valor()
         
-        operacao_origem = Operacao(datetime.now(), getattr(TipoOperacao, "deposito"), valor)
+        operacao_origem = Operacao(datetime.now(), TipoOperacao.deposito, valor)
         conta_origem.operacoes.append(operacao_origem)
 
         conta_origem.saldo += valor 
@@ -64,10 +83,18 @@ class ControladorOperacao:
     
     def extrato(self):
         conta_origem = self.__controlador_sistema.controlador_conta.pegar_contar_por_numero(self.__tela.selecionar_conta())
+
+        if (not conta_origem):
+            raise CadastroException("Conta de origem não encontrada")
+
         self.__tela.mostrar_extrato(conta_origem.operacoes)
     
     def consulta_saldo(self):
         conta_origem = self.__controlador_sistema.controlador_conta.pegar_contar_por_numero(self.__tela.selecionar_conta())
+
+        if (not conta_origem):
+            raise CadastroException("Conta de origem não encontrada")
+            
         self.__tela.mostrar_saldo(conta_origem)
 
     def abre_tela(self):
@@ -81,11 +108,14 @@ class ControladorOperacao:
 
                 opcoes[opcao]()  
             except ValueError:
-                self.__tela.mostrar_mensagem("Valor inválido, digite um numero inteiro")
+                self.__tela.mostrar_mensagem("Valor inválido, verifique se o tipo do valor da entrada está correto!")
             except AttributeError:
                 self.__tela.mostrar_mensagem("Tipo de operação não encontrado!")
             except ValorInvalidoException as e:
                 self.__tela.mostrar_mensagem(e.mensagem)
             except CadastroException as e:
                 self.__tela.mostrar_mensagem(e.mensagem)
+            except SaldoInsuficienteException as e:
+                self.__tela.mostrar_mensagem(e.mensagem)
+                
  

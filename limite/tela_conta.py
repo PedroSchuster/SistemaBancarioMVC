@@ -23,26 +23,26 @@ class TelaConta(Tela):
             print(f"Tipo: {i.tipo.name.capitalize()}")
             print(f"Cliente: {i.cliente.capitalize()}")
             print(f"Funcionário: {i.funcionario.capitalize()}")
-            print(f"Saldo: {i.saldo}")
+            print(f"Saldo: {i.saldo :.2f}")
             print("-"*10)
 
     def pegar_dados_conta(self):
-        dados_conta = []
-        dados_conta.append(int(input("Digite o numero da conta: ")))
+        dados_conta = {}
+        dados_conta["numero"] = (int(input("Digite o numero da conta: ")))
         tipo = input("Digite o tipo da conta: ")
         if (not getattr(TipoConta, tipo)):
             raise AttributeError
-        dados_conta.append(getattr(TipoConta, tipo))
-        dados_conta.append(input("Digite o cpf do cliente: "))
-        dados_conta.append(input("Digite o cpf do funcionario: "))
+        dados_conta["tipo"] = (getattr(TipoConta, tipo))
+        dados_conta["cliente"] = (input("Digite o cpf do cliente: "))
+        dados_conta["funcionario"] = (input("Digite o cpf do funcionario: "))
         return dados_conta
         
     
     def buscar_conta(self):
         return int(input(("Digite o número da conta: ")))
         
-    def mostrar_mensagem(self,mensagens):
-        return super().mostrar_mensagem(mensagens)
+    def mostrar_mensagem(self,mensagem):
+        return super().mostrar_mensagem(mensagem)
     
     
     

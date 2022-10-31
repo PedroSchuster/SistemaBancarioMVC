@@ -16,5 +16,5 @@ class TelaSistema(Tela):
         opcao = self.verifica_opcao("Escolhe uma opção: ", [1,2,3,4,0])
         return opcao
     
-    def mostrar_mensagem(self,mensagens):
-        return super().mostrar_mensagem(mensagens)
+    def mostrar_mensagem(self,mensagem):
+        return super().mostrar_mensagem(mensagem)

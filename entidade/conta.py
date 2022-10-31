@@ -36,6 +36,10 @@ class Conta:
     def cliente(self):
         return self.__cliente
         
+    @cliente.setter
+    def cliente(self, cliente):
+        self.__cliente = cliente
+
     @property
     def funcionario(self):
         return self.__funcionario
