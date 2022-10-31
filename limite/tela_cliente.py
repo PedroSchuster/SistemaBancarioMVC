@@ -39,14 +39,14 @@ class TelaCliente(Tela):
             print("IDADE: ", dados_cliente["idade"])
             print("ENDEREÇOS: ")
             for i in dados_cliente["enderecos"]:
-                print(f"Número: {i.numero}")
+                print("-"*10)
                 print(f"Rua: {i.rua.capitalize()}")
                 print(f"Complemento: {i.complemento.capitalize()}")
                 print(f"Bairro: {i.bairro.capitalize()}")
                 print(f"Cidade: {i.cidade.capitalize()}")
                 print(f"Cep: {i.cep.capitalize()}")
-                print("-"*10)
-                print("CONTAS: ")
+
+            print("CONTAS: ")
             for i in dados_cliente["contas"]:
                 print("-"*10)
                 print(f"Número: {i.numero}")
