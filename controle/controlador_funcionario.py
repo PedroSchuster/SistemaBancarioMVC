@@ -103,3 +103,4 @@ class ControladorFuncionario:
 
         while continua:
             lista_opcoes[self.__tela_funcionario.exibe_opcoes()]()
+            

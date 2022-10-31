@@ -4,11 +4,11 @@ from abc import ABC, abstractclassmethod
 class Pessoa(ABC):
 
     @abstractclassmethod
-    def __init__(self, nome: str, cpf: int, telefone: int):
+    def __init__(self, nome: str, cpf: str, telefone: int):
         if isinstance(nome, str):
             self.__nome = nome
 
-        if isinstance(cpf, int):
+        if isinstance(cpf, str):
             self.__cpf = cpf
 
         if isinstance(telefone, int):
@@ -32,8 +32,8 @@ class Pessoa(ABC):
             self.__nome = nome
 
     @cpf.setter
-    def cpf(self, cpf: int):
-        if isinstance(cpf, int):
+    def cpf(self, cpf: str):
+        if isinstance(cpf, str):
             self.__cpf = cpf 
 
     @telefone.setter

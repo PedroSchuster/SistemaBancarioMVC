@@ -1,7 +1,7 @@
 from entidade.pessoa import Pessoa
 
 class Funcionario(Pessoa):
-    def __init__(self, nome: str, cpf: int, telefone: int, matricula: int):
+    def __init__(self, nome: str, cpf: str, telefone: int, matricula: int):
         super().__init__(nome, cpf, telefone)
         if isinstance(matricula, int):
             self.__matricula = matricula

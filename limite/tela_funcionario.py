@@ -15,7 +15,7 @@ class TelaFuncionario(Tela):
 
     def pega_dados_funcionario(self):
         print("-------- DADOS FUNCIONARIO ----------")
-        cpf = int(input("cpf: "))
+        cpf = input("cpf: ")
         nome = input("nome: ")
         telefone = int(input("telefone:"))
         matricula = int(input("matricula:"))
@@ -34,7 +34,7 @@ class TelaFuncionario(Tela):
             print("Funcionario não encontrado!")
 
     def seleciona_funcionario(self):
-        cpf_funcionario = int(input(" CPF do funcionario que deseja selecionar: "))
+        cpf_funcionario = input(" CPF do funcionario que deseja selecionar: ")
 
         return cpf_funcionario
 

@@ -20,9 +20,9 @@ class ControladorCliente:
         cliente = Cliente(dados_cliente["nome"], dados_cliente["cpf"], dados_cliente["telefone"],
                         dados_cliente["idade"])
         
-        dados_endereco = self.__tela_cliente.pegar_dados_endereco
+        dados_endereco = self.__tela_cliente.pegar_dados_endereco()
         
-        self.add_endereco(cliente, dados_endereco["rua"], dados_endereco["complemento"], dados_endereco["complemento"], 
+        self.add_endereco(cliente, dados_endereco["rua"], dados_endereco["bairro"], dados_endereco["complemento"], 
         dados_endereco["cidade"], dados_endereco["cep"])
         
         self.__cliente.append(cliente)
@@ -45,7 +45,8 @@ class ControladorCliente:
     def lista_cliente(self):
         for cliente in self.__cliente:
             self.__tela_cliente.mostra_cliente(
-                {"nome": cliente.nome, "telefone": cliente.telefone, "cpf": cliente.cpf, "idade": cliente.idade, "contas" : cliente.contas})
+                {"nome": cliente.nome, "telefone": cliente.telefone, "cpf": cliente.cpf, "idade": cliente.idade, "contas" : cliente.contas,
+                "enderecos" : cliente.enderecos})
     
     def excluir_cliente(self):
         self.lista_cliente()
