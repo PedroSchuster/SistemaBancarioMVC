@@ -92,11 +92,11 @@ class ControladorFuncionario:
             #opcao_escolhida()
 
     def retornar(self):
-        self.__controlador_sistema.abre_tela()
+        self.__controlador_sistema.inicializa_sistema()
 
     def abre_tela(self):
-        lista_opcoes = {1: self.incluir_funcionario, 2: self.alterar_funcionario, 3: self.lista_funcionario,
-                        4: self.excluir_funcionario,
+        lista_opcoes = {1: self.incluir_funcionario, 2: self.excluir_funcionario, 3: self.lista_funcionario,
+                        4: self.alterar_funcionario,
                         0: self.retornar}
                 
         continua = True

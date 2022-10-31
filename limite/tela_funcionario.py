@@ -8,7 +8,7 @@ class TelaFuncionario(Tela):
         print("1 -  Incluir novo funcionario")
         print("2 -  Excluir  funcionario")
         print("3 -  Listar  funcionarios")
-        print("4 -  Buscar  um funcionario")
+        print("4 -  Alterar  um funcionario")
         print("0 -  Voltar")
         opcao = self.verifica_opcao("Escolha uma opcão: ", [1, 2, 3, 4, 0])
         return opcao

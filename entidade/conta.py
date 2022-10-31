@@ -1,6 +1,12 @@
+from entidade.cliente import Cliente
+from entidade.funcionario import Funcionario
+from enums.tipo_conta import TipoConta
+from enums.tipo_operacao import TipoOperacao
+
+
 class Conta:
     
-    def __init__(self, numero, tipo, cliente, funcionario):
+    def __init__(self, numero : int, tipo : TipoConta, cliente : Cliente, funcionario : Funcionario):
         self.__numero = numero
         self.__saldo = 0
         self.__tipo = tipo

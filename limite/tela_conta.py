@@ -7,6 +7,7 @@ class TelaConta(Tela):
         return super().verifica_opcao(mensagem, inteiros_validos)
     
     def tela_opcoes(self):
+        print("-------- CADASTRO DE CONTAS --------")
         print("1 - Cadastrar conta")
         print("2 - Alterar cadastro")
         print("3 - Excluir cadastro")
@@ -17,24 +18,21 @@ class TelaConta(Tela):
     
     
     def mostrar_conta(self, dados_conta):
-        print("-"*10)
+        print("----- LISTAS DE CONTAS -----")
         for i in dados_conta:
             print(f"Número: {i.numero}")
             print(f"Tipo: {i.tipo.name.capitalize()}")
-            print(f"Cliente: {i.cliente.capitalize()}")
-            print(f"Funcionário: {i.funcionario.capitalize()}")
-            print(f"Saldo: {i.saldo :.2f}")
+            print(f"Cliente: {i.cliente.nome.capitalize()}")
+            print(f"Funcionário: {i.funcionario.nome.capitalize()}")
+            print(f"Saldo: {i.saldo:.2f}")
             print("-"*10)
 
     def pegar_dados_conta(self):
         dados_conta = {}
         dados_conta["numero"] = (int(input("Digite o numero da conta: ")))
-        tipo = input("Digite o tipo da conta: ")
-        if (not getattr(TipoConta, tipo)):
-            raise AttributeError
-        dados_conta["tipo"] = (getattr(TipoConta, tipo))
-        dados_conta["cliente"] = (input("Digite o cpf do cliente: "))
-        dados_conta["funcionario"] = (input("Digite o cpf do funcionario: "))
+        dados_conta["tipo"] = (getattr(TipoConta, input("Digite o tipo da conta: ")))
+        dados_conta["cliente"] = (int(input("Digite o cpf do cliente: ")))
+        dados_conta["funcionario"] = (int(input("Digite o cpf do funcionario: ")))
         return dados_conta
         
     

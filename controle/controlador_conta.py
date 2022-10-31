@@ -17,15 +17,30 @@ class ControladorConta:
     def incluir_conta(self):
         dados_conta = self.__tela_conta.pegar_dados_conta()
         
-        conta = Conta(dados_conta["numero"], dados_conta["tipo"],
-                      dados_conta["cliente"],dados_conta["funcionario"])
+        cliente = self.__controlador_sistema.controlador_cliente.pega_cliente_por_cpf(dados_conta["cliente"])
+        
+        if (not cliente):
+            raise CadastroException("Cliente não encontrado")
+        
+        funcionario = self.__controlador_sistema.controlador_funcionario.pega_funcionario_por_cpf(dados_conta["funcionario"])
+        
+        if (not funcionario):
+            raise CadastroException("Funcionário não encontrado")
+        
+        conta = Conta(dados_conta["numero"],dados_conta["tipo"],
+                      cliente, funcionario)
         
         if (self.pegar_contar_por_numero(conta.numero)):
            raise CadastroException("Cadastro duplicado!")
-        
-        if (isinstance(conta,Conta) ):
-            self.__contas.append(conta)
-        
+
+        if ((len(cliente.contas) > 0 and len(cliente.contas) < 2 and cliente.contas[0].tipo != conta.tipo)
+            or len(cliente.contas) == 0):
+            if (isinstance(conta,Conta)):
+                self.__contas.append(conta)
+                cliente.contas.append(conta)
+        else:
+            raise CadastroException("Não foi possível registrar essa conta ao cliente cadastrado")
+
         if (conta.tipo == TipoConta.poupanca):
             threading.Thread(target=self.calculo_poupanca, args=(conta,), daemon=True).start()
         
@@ -38,10 +53,21 @@ class ControladorConta:
         
         self.__tela_conta.mostrar_mensagem("Novos dados da conta: ")
         dados_conta = self.__tela_conta.pegar_dados_conta()
+        
+        cliente = self.__controlador_sistema.controlador_cliente.pega_cliente_por_cpf(dados_conta["cliente"])
+        
+        if (not cliente):
+            raise CadastroException("Cliente não encontrado")
+        
+        funcionario = self.__controlador_sistema.controlador_funcionario.pega_funcionario_por_cpf(dados_conta["funcionario"])
+        
+        if (not funcionario):
+            raise CadastroException("Funcionario não encontrado")
+        
         conta.numero = dados_conta["numero"]
         conta.tipo = dados_conta["tipo"]
-        conta.cliente = dados_conta["cliente"]
-        conta.funcionario = dados_conta["funcionario"]
+        conta.cliente = cliente
+        conta.funcionario = funcionario
 
         if (conta.tipo == TipoConta.poupanca):
             threading.Thread(target=self.calculo_poupanca, args=(conta,), daemon=True).start()
@@ -59,7 +85,6 @@ class ControladorConta:
     
     def listar_contas(self):
         if (self.__contas):
-            self.__tela_conta.mostrar_mensagem("Lista das contas: ")
             return self.__tela_conta.mostrar_conta(self.__contas)
         else:
             raise CadastroException("Nenhuma conta cadastrada")      

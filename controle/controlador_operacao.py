@@ -1,7 +1,7 @@
 from datetime import datetime
 from enums.tipo_conta import TipoConta
 from enums.tipo_operacao import TipoOperacao
-from excecoes.saldo_insuficiente_exception import SaldoInsuficienteException
+from excecoes.operacao_exception import OperacaoException
 from limite.tela_operacao import TelaOperacao
 from excecoes.valor_invalido_exception import ValorInvalidoException
 from excecoes.cadastro_exception import CadastroException
@@ -25,27 +25,27 @@ class ControladorOperacao:
         if (not conta_destino):
             raise CadastroException("Conta de destino não encontrada")
         elif (conta_destino.tipo == TipoConta.poupanca):
-            raise CadastroException("Não é possivel fazer transações com conta do tipo poupança")
+            raise OperacaoException("Não é possivel fazer transações com conta do tipo poupança")
         elif (conta_origem.numero == conta_destino.numero):
-            raise CadastroException("Não é possivel fazer transações entre duas contas iguais")
+            raise OperacaoException("Não é possivel fazer transações entre duas contas iguais")
         
         valor = self.__tela.pegar_valor()
        
         if (valor > conta_origem.saldo):
-            raise SaldoInsuficienteException(conta_origem.numero)
-        
-        operacao_origem = Operacao(datetime.now(), TipoOperacao.transacao, -valor)
-        operacao_destino = Operacao(datetime.now(), TipoOperacao.transacao, valor)
-        
-        conta_origem.operacoes.append(operacao_origem)
-        conta_destino.operacoes.append(operacao_destino)
+            raise OperacaoException(f"A conta {conta_origem.numero} não possui saldo suficiente")
         
         conta_origem.saldo -= valor
         conta_destino.saldo += valor
+
+        operacao_origem = Operacao(datetime.now(), TipoOperacao.transacao, -valor)
+        operacao_destino = Operacao(datetime.now(), TipoOperacao.transacao, valor)
         
+        self.registrar_operacao(operacao_origem, conta_origem)
+        self.registrar_operacao(operacao_destino, conta_destino)
+
         self.__tela.mostrar_mensagem("Transacao feito com sucesso! ")
-        self.__tela.mostrar_mensagem(f"Novo saldo da conta {conta_origem.numero} é {conta_origem.saldo}")
-        self.__tela.mostrar_mensagem(f"Novo saldo da conta {conta_destino.numero} é {conta_destino.saldo}")
+        self.__tela.mostrar_mensagem(f"Novo saldo da conta {conta_origem.numero} é {conta_origem.saldo:.2f}")
+        self.__tela.mostrar_mensagem(f"Novo saldo da conta {conta_destino.numero} é {conta_destino.saldo:.2f}")
     
     def saque(self):
         conta_origem = self.__controlador_sistema.controlador_conta.pegar_contar_por_numero(self.__tela.selecionar_conta())
@@ -56,15 +56,15 @@ class ControladorOperacao:
         valor = self.__tela.pegar_valor()
 
         if (valor > conta_origem.saldo):
-            raise SaldoInsuficienteException(conta_origem.numero)
-        
-        operacao_origem = Operacao(datetime.now(), TipoOperacao.saque, -valor)
-        conta_origem.operacoes.append(operacao_origem)
+            raise OperacaoException(f"A conta {conta_origem.numero} não possui saldo suficiente")
 
         conta_origem.saldo -= valor 
+        
+        operacao_origem = Operacao(datetime.now(), TipoOperacao.saque, -valor)
+        self.registrar_operacao(operacao_origem, conta_origem)
 
         self.__tela.mostrar_mensagem("Saque feito com sucesso! ")
-        self.__tela.mostrar_mensagem(f"Novo saldo da conta {conta_origem.numero} é {conta_origem.saldo}")
+        self.__tela.mostrar_mensagem(f"Novo saldo da conta {conta_origem.numero} é {conta_origem.saldo:.2f}")
     
     def deposito(self):
         conta_origem = self.__controlador_sistema.controlador_conta.pegar_contar_por_numero(self.__tela.selecionar_conta())
@@ -73,13 +73,13 @@ class ControladorOperacao:
             raise CadastroException("Conta de origem não encontrada")
 
         valor = self.__tela.pegar_valor()
+        conta_origem.saldo += valor 
         
         operacao_origem = Operacao(datetime.now(), TipoOperacao.deposito, valor)
-        conta_origem.operacoes.append(operacao_origem)
+        self.registrar_operacao(operacao_origem, conta_origem)
 
-        conta_origem.saldo += valor 
         self.__tela.mostrar_mensagem("Depósito feito com sucesso! ")
-        self.__tela.mostrar_mensagem(f"Novo saldo da conta {conta_origem.numero} é {conta_origem.saldo}")
+        self.__tela.mostrar_mensagem(f"Novo saldo da conta {conta_origem.numero} é {conta_origem.saldo:.2f}")
     
     def extrato(self):
         conta_origem = self.__controlador_sistema.controlador_conta.pegar_contar_por_numero(self.__tela.selecionar_conta())
@@ -96,6 +96,10 @@ class ControladorOperacao:
             raise CadastroException("Conta de origem não encontrada")
             
         self.__tela.mostrar_saldo(conta_origem)
+
+
+    def registrar_operacao(self, operacao, conta):
+        conta.operacoes.append(operacao)
 
     def abre_tela(self):
         opcoes = {1:self.transacao, 2: self.saque, 3: self.deposito, 4: self.extrato, 5 : self.consulta_saldo}
@@ -115,7 +119,7 @@ class ControladorOperacao:
                 self.__tela.mostrar_mensagem(e.mensagem)
             except CadastroException as e:
                 self.__tela.mostrar_mensagem(e.mensagem)
-            except SaldoInsuficienteException as e:
+            except OperacaoException as e:
                 self.__tela.mostrar_mensagem(e.mensagem)
                 
  
