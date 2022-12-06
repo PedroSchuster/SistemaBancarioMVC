@@ -27,7 +27,7 @@ class ControladorConta:
         if (not funcionario):
             raise CadastroException("Funcionário não encontrado")
         
-        conta = Conta(dados_conta["numero"],dados_conta["tipo"],
+        conta = Conta(dados_conta["numero"],TipoConta[dados_conta["tipo"]],
                       cliente, funcionario)
         
         if (self.pegar_contar_por_numero(conta.numero)):
@@ -84,8 +84,12 @@ class ControladorConta:
                 
     
     def listar_contas(self):
+        lista_numeros = []
+        for i in self.__contas:
+            lista_numeros.append(i.numero)
         if (self.__contas):
-            return self.__tela_conta.mostrar_conta(self.__contas)
+            conta = self.pegar_contar_por_numero(self.__tela_conta.listar_contas(lista_numeros))
+            return self.__tela_conta.mostrar_conta(conta)
         else:
             raise CadastroException("Nenhuma conta cadastrada")      
 

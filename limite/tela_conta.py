@@ -1,46 +1,89 @@
 from enums.tipo_conta import TipoConta
 from limite.tela import Tela
+import PySimpleGUI as sg
 
 
 class TelaConta(Tela):
-    def verifica_opcao(self, mensagem, inteiros_validos):
-        return super().verifica_opcao(mensagem, inteiros_validos)
-    
+
+    def __init__(self):
+        self.__window = None
+        sg.ChangeLookAndFeel('DarkTeal4')
+
     def tela_opcoes(self):
-        print("-------- CADASTRO DE CONTAS --------")
-        print("1 - Cadastrar conta")
-        print("2 - Alterar cadastro")
-        print("3 - Excluir cadastro")
-        print("4 - Listar contas")
-        print("0 - Retornar")
-        opcao = self.verifica_opcao("Escolhe uma opção: ", [1,2,3,4,0])
-        return opcao  
+        layout = [
+      [sg.Text("-------- CADASTRO DE CONTAS --------", font=("Helvica", 25))],
+      [sg.Text('Escolha sua opção', font=("Helvica", 15))],
+      [sg.Radio("Cadastrar conta", "RD1", key='1')],
+      [sg.Radio("Alterar cadastro", "RD1", key='2')],
+      [sg.Radio("Excluir cadastro", "RD1", key='3')],
+      [sg.Radio("Listar contas", "RD1", key='4')],
+      [sg.Radio('Retornar', "RD1", key='0')],
+      [sg.Button('Confirmar'), sg.Cancel('Cancelar')]
+    ]
+        self.__window = sg.Window('Sistema bancario').Layout(layout)
+        button, values = self.open()
+        opcao = self.verifica_opcao(button, values)
+        self.close()
+        return opcao
+
+    def verifica_opcao(self, mensagem, inteiros_validos):
+        return super().pegar_opcao(mensagem, inteiros_validos)
     
-    
-    def mostrar_conta(self, dados_conta):
-        print("----- LISTAS DE CONTAS -----")
-        for i in dados_conta:
-            print(f"Número: {i.numero}")
-            print(f"Tipo: {i.tipo.name.capitalize()}")
-            print(f"Cliente: {i.cliente.nome.capitalize()}")
-            print(f"Funcionário: {i.funcionario.nome.capitalize()}")
-            print(f"Saldo: {i.saldo:.2f}")
-            print("-"*10)
+    def mostrar_conta(self, conta):
+        resultado = ''
+        resultado += f"Número: {conta.numero}" + '\n'
+        resultado += f"Tipo: {conta.tipo.name.capitalize()}" '\n'
+        resultado += f"Cliente: {conta.cliente.nome.capitalize()}" + '\n'
+        resultado += f"Funcionário: {conta.funcionario.nome.capitalize()}" '\n'
+        resultado += f"Saldo: {conta.saldo:.2f}" + '\n'
+        sg.Popup('-------- VISUALIZAR CONTA ----------', resultado)
+
+    def listar_contas(self, list):
+        layout = [[sg.Text('Choose additional Facilities',size=(30, 1), font='Lucida',justification='left')],
+         [sg.Listbox(values=list, key='conta', size=(30, 6))],
+        [sg.Button('Confirmar'), sg.Cancel('Cancelar')]]
+
+        self.__window = sg.Window('Sistema bancario').Layout(layout)
+        button, values = self.open()
+        self.close()
+        return values['conta'][0]
+        
 
     def pegar_dados_conta(self):
-        dados_conta = {}
-        dados_conta["numero"] = (int(input("Digite o numero da conta: ")))
-        dados_conta["tipo"] = (getattr(TipoConta, input("Digite o tipo da conta: ")))
-        dados_conta["cliente"] = (int(input("Digite o cpf do cliente: ")))
-        dados_conta["funcionario"] = (int(input("Digite o cpf do funcionario: ")))
-        return dados_conta
+        layout = [
+      [sg.Text('-------- DADOS DA CONTA ----------', font=("Helvica", 25))],
+      [sg.Text('Numero da conta::', size=(15, 1)), sg.InputText('', key='numero')],
+      [sg.Text('Tipo da conta::', size=(15, 1)), sg.InputText('', key='tipo')],
+      [sg.Text('Cpf do cliente: :', size=(15, 1)), sg.InputText('', key='cliente')],
+      [sg.Text('Cpf do funcionario::', size=(15, 1)), sg.InputText('', key='funcionario')],
+      [sg.Button('Confirmar'), sg.Cancel('Cancelar')]
+    ]
+
+        self.__window = sg.Window('Sistema de livros').Layout(layout)
+        button, values = self.open()
+        self.close()
+        return values
         
     
     def buscar_conta(self):
-        return int(input(("Digite o número da conta: ")))
+        layout = [
+      [sg.Text('-------- ALTERAR CONTA----------', font=("Helvica", 25))],
+      [sg.Text('Numero da conta::', size=(15, 1)), sg.InputText('', key='numero')],
+      [sg.Button('Confirmar'), sg.Cancel('Cancelar')]
+    ]
+
+        self.__window = sg.Window('Sistema de livros').Layout(layout)
+        button, values = self.open()
+        self.close()
+        return int(values['numero'])
         
     def mostrar_mensagem(self,mensagem):
         return super().mostrar_mensagem(mensagem)
     
     
-    
+    def close(self):
+        self.__window.Close()
+
+    def open(self):
+        button, values = self.__window.Read()
+        return button, values
