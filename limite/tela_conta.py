@@ -46,6 +46,10 @@ class TelaConta(Tela):
         self.__window = sg.Window('Sistema bancario').Layout(layout)
         button, values = self.open()
         self.close()
+        
+        if button == 'Cancelar':
+            return None
+
         return values['conta'][0]
         
 
@@ -62,6 +66,9 @@ class TelaConta(Tela):
         self.__window = sg.Window('Sistema de livros').Layout(layout)
         button, values = self.open()
         self.close()
+
+        if button == 'Cancelar':
+            return None
         return values
         
     
@@ -75,6 +82,9 @@ class TelaConta(Tela):
         self.__window = sg.Window('Sistema de livros').Layout(layout)
         button, values = self.open()
         self.close()
+        
+        if button == 'Cancelar':
+            return None
         return int(values['numero'])
         
     def mostrar_mensagem(self,mensagem):

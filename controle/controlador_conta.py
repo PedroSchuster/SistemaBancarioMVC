@@ -17,6 +17,14 @@ class ControladorConta:
     def incluir_conta(self):
         dados_conta = self.__tela_conta.pegar_dados_conta()
         
+        if (dados_conta == None):
+            return
+
+        if (not dados_conta["cliente"] or not dados_conta["funcionario"]
+            or not dados_conta["tipo"] or not dados_conta["numero"]):
+            raise CadastroException("Há campos para serem preenchidos!")
+            
+
         cliente = self.__controlador_sistema.controlador_cliente.pega_cliente_por_cpf(dados_conta["cliente"])
         
         if (not cliente):
@@ -27,11 +35,11 @@ class ControladorConta:
         if (not funcionario):
             raise CadastroException("Funcionário não encontrado")
         
+        if (self.pegar_contar_por_numero(dados_conta["numero"])):
+           raise CadastroException("Cadastro duplicado!")
+
         conta = Conta(dados_conta["numero"],TipoConta[dados_conta["tipo"]],
                       cliente, funcionario)
-        
-        if (self.pegar_contar_por_numero(conta.numero)):
-           raise CadastroException("Cadastro duplicado!")
 
         if ((len(cliente.contas) > 0 and len(cliente.contas) < 2 and cliente.contas[0].tipo != conta.tipo)
             or len(cliente.contas) == 0):
@@ -44,9 +52,14 @@ class ControladorConta:
         if (conta.tipo == TipoConta.poupanca):
             threading.Thread(target=self.calculo_poupanca, args=(conta,), daemon=True).start()
         
+        return self.__tela_conta.mostrar_mensagem("Conta registrada com sucesso!")
     
     def alterar_conta(self):
         numero_conta = self.__tela_conta.buscar_conta()
+
+        if (numero_conta == None):
+            return
+        
         conta = self.pegar_contar_por_numero(numero_conta)
         if (not conta):
             raise CadastroException("Conta não encontrada")      
@@ -76,6 +89,10 @@ class ControladorConta:
     
     def excluir_conta(self):
         numero_conta = self.__tela_conta.buscar_conta()
+        
+        if (numero_conta == None):
+            return
+        
         conta = self.pegar_contar_por_numero(numero_conta)
         if (conta == None):
             raise CadastroException("Conta não encontrada")   
