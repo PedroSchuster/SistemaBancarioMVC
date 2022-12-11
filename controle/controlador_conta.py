@@ -36,7 +36,7 @@ class ControladorConta:
         if (not funcionario):
             raise CadastroException("Funcionário não encontrado")
         
-        if (self.pegar_contar_por_numero(dados_conta["numero"])):
+        if (self.pegar_contar_por_numero(dados_conta["numero"])[1]):
            raise CadastroException("Cadastro duplicado!")
 
         conta = Conta(int(dados_conta["numero"]), TipoConta[dados_conta["tipo"]],
@@ -59,15 +59,9 @@ class ControladorConta:
         return self.__tela_conta.mostrar_mensagem("Conta registrada com sucesso!")
     
     def alterar_conta(self):
-        numero_conta = self.__tela_conta.buscar_conta()
+        index = self.listar_contas()
 
-        if (numero_conta == None):
-            return
-        
-        index = self.pegar_contar_por_numero(numero_conta)
-
-        conta = self.__contas[index]
-        if (not conta):
+        if (index == None):
             raise CadastroException("Conta não encontrada")      
         
         self.__tela_conta.mostrar_mensagem("Novos dados da conta: ")
@@ -83,6 +77,7 @@ class ControladorConta:
         if (not funcionario):
             raise CadastroException("Funcionario não encontrado")
         
+        conta = Conta()
         conta.numero = int(dados_conta["numero"])
         conta.tipo = dados_conta["tipo"]
         conta.cliente = cliente
@@ -114,7 +109,7 @@ class ControladorConta:
         for i in self.__contas:
             lista_numeros.append(i.numero)
         if (self.__contas):
-            return self.pegar_contar_por_numero(self.__tela_conta.listar_contas(lista_numeros))
+            return self.pegar_contar_por_numero(self.__tela_conta.listar_contas(lista_numeros))[0]
         else:
             raise CadastroException("Nenhuma conta cadastrada")      
 
@@ -129,7 +124,7 @@ class ControladorConta:
         if self.__contas:
             for i in range(len(self.__contas)) :
                 if self.__contas[i].numero == numero:
-                    return i
+                    return i, self.__contas[i]
         return None
         
     def calculo_poupanca(self, conta):
