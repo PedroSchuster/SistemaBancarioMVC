@@ -1,25 +1,65 @@
 from limite.tela import Tela
+import PySimpleGUI as sg 
 
 class TelaCliente(Tela):
 
     def tela_opcoes(self):
-        print("-------- CADASTRO DE CLIENTES --------")
+
+        layout = [
+                        [sg.Text('CADASTRO DE CLIENTES', font=("Helvica",25))],
+                        [sg.Text('Escolha sua opção:', font=("Helvica",15))],
+                        [sg.Radio('Incluir novo cliente',"RD1", key='1')],
+                        [sg.Radio('Excluir  cliente',"RD1", key='2')],
+                        [sg.Radio('Listar clientes',"RD1", key='3')],
+                        [sg.Radio('Voltar',"RD1", key='0')],
+                        [sg.Button('Confirmar'), sg.Cancel('Cancelar',key='0')]
+                    ]
+        __window = sg.Window('Clientes').Layout(layout)
+        """print("-------- CADASTRO DE CLIENTES --------")
         print("1 -  Incluir novo cliente")
         print("2 -  Excluir  cliente")
         print("3 -  Listar  clientes")
         print("4 -  Alterar  um cliente")
         print("0 -  Voltar")
-        opcao = self.verifica_opcao("Escolha uma opcão: ", [1, 2, 3, 4, 0])
+        opcao = self.verifica_opcao("Escolha uma opcão: ", [1, 2, 3, 4, 0])"""
+        button, values = __window.Read()
+        opcao = 0
+        if values['1']:
+            opcao = 1
+        if values['2']:
+            opcao = 2
+        if values['3']:
+            opcao = 3
+        #cobre casos
+        if values['0'] or button in (None, 'Cancelar'):
+            opcao = 0
+
+        __window.close()
         return opcao
 
     def pega_dados_cliente(self):
-        print("----- DADOS CLIENTE -----")
+
+        layout = [
+                        [sg.Text('DADOS DO CLIENTE', font=("Helvica",25))],
+                        [sg.Text('Nome', size =(15, 1)), sg.InputText()],
+                        [sg.Text('CPF', size =(15, 1)), sg.InputText()],                        
+                        [sg.Text('Telefone', size =(15, 1)), sg.InputText()],
+                        [sg.Text('Idade', size =(15, 1)), sg.InputText()],
+                        [sg.Button('Confirmar'), sg.Cancel('Cancelar',key='0')]
+                    ]
+        __window = sg.Window('Cadastrar').Layout(layout)
+        
+        button, values = __window.Read()
+        __window.close()
+        return {"cpf": values[1], "nome": values[0], "telefone": values[2], "idade": values[3]}
+        """print("----- DADOS CLIENTE -----")
         cpf = input("Cpf: ")
         nome = input("Nome: ")
         telefone = int(input("Telefone: "))
-        idade = int(input("Idade: "))
+        idade = int(input("Idade: "))"""
 
-        return {"cpf": cpf, "nome": nome, "telefone": telefone, "idade": idade}
+        #return {"cpf": cpf, "nome": nome, "telefone": telefone, "idade": idade}
+
 
     def pegar_dados_endereco(self):
         print("----- DADOS ENDEREÇO -----")
@@ -33,7 +73,32 @@ class TelaCliente(Tela):
 
     def mostra_cliente(self, dados_cliente):
         if dados_cliente is not None:
-            print("NOME: ", dados_cliente["nome"])
+
+            layout = [
+                            [sg.Text('NOME: '+dados_cliente["nome"])],
+                            [sg.Text('CPF: '+dados_cliente["cpf"])],
+                            [sg.Text('TELEFONE: '+dados_cliente["telefone"])],
+                            [sg.Text('IDADE: '+dados_cliente["idade"])],
+
+                            [sg.Button('OK',key='0')]
+                        ]
+            __window = sg.Window('Mostrar Cliente').Layout(layout)
+                
+            button, values = __window.Read()
+            __window.close()    
+
+
+        else:
+
+            layout = [
+                            [sg.Text('Cliente não encontrado!')],
+                            [sg.Button('OK',key='0')]
+                        ]
+            __window = sg.Window('Mostrar Carro').Layout(layout)
+                
+            button, values = __window.Read()
+            __window.close()
+            """print("NOME: ", dados_cliente["nome"])
             print("CPF: ", dados_cliente["cpf"])
             print("TELEFONE: ", dados_cliente["telefone"])
             print("IDADE: ", dados_cliente["idade"])
@@ -55,13 +120,34 @@ class TelaCliente(Tela):
                 print(f"Saldo: {i.saldo:.2f}")
 
         else:
-            print("Cliente não encontrado!")
+            print("Cliente não encontrado!")"""
 
 
     def seleciona_cliente(self):
-        cpf_cliente = int(input(" CPF do cliente que deseja selecionar: "))
 
-        return cpf_cliente
+        layout = [
+                        [sg.Text('CPF do cliente que deseja selecionar:', size =(15, 1)), sg.InputText()],
+                        [sg.Button('Confirmar'), sg.Cancel('Cancelar',key='0')]
+                    ]
+        __window = sg.Window('Alterar').Layout(layout)
+            
+        button, values = __window.Read()
+        __window.close()
+        return values[0]
+        #cpf_cliente = int(input(" CPF do cliente que deseja selecionar: "))
+
+        #return cpf_cliente
 
     def mostra_mensagem(self, msg):
-        print(msg)
+
+        layout = [
+                            [sg.Text(msg)],
+
+                            [sg.Button('OK',key='0')]
+                   ]
+        __window = sg.Window('Informações').Layout(layout)
+                
+        button, values = __window.Read()
+        __window.close()
+
+        #print(msg)
