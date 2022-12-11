@@ -1,7 +1,12 @@
 from limite.tela import Tela
+import PySimpleGUI as sg
 
 class TelaOperacao(Tela):
-    
+
+    def __init__(self):
+        self.__window = None
+        sg.ChangeLookAndFeel('DarkTeal4')
+   
     def verifica_opcao(self, mensagem, inteiros_validos):
         return super().verifica_opcao(mensagem, inteiros_validos)
     
@@ -9,32 +14,80 @@ class TelaOperacao(Tela):
         return super().mostrar_mensagem(mensagem)
     
     def tela_opcoes(self):
-        print("*"*10)
-        print("1 - Transação")
-        print("2 - Saque")
-        print("3 - Deposito")
-        print("4 - Extrato")
-        print("5 - Saldo")
-        print("0 - Retornar")
-        opcao = self.verifica_opcao("Escolhe uma opção: ", [1,2,3,4,5,0])
+        layout = [
+      [sg.Text("-------- SELECIONAR OPERAÇÃO --------", font=("Helvica", 25))],
+      [sg.Text('Escolha sua opção', font=("Helvica", 15))],
+      [sg.Radio("Transação", "RD1", key='1')],
+      [sg.Radio("Saque", "RD1", key='2')],
+      [sg.Radio("Deposito", "RD1", key='3')],
+      [sg.Radio("Extrato", "RD1", key='4')],
+      [sg.Radio("Saldo", "RD1", key=5)],
+      [sg.Radio('Retornar', "RD1", key='0')],
+      [sg.Button('Confirmar'), sg.Cancel('Cancelar')]
+    ]
+        self.__window = sg.Window('Sistema bancario').Layout(layout)
+        button, values = self.open()
+        opcao = self.pegar_opcao(button, values)
+        self.close()
         return opcao
-    
+
     def selecionar_conta(self):
-        return int(input("Digite o numero da conta: "))
+        layout = [
+        [sg.Text("-------- SELECIONAR CONTA --------", font=("Helvica", 25))],
+        [sg.Text('Número da conta: ', font=("Helvica", 15)), sg.InputText('', key='numero')]]
+
+        self.__window = sg.Window('Sistema bancario').Layout(layout)
+        button, values = self.open()
+        self.close()
+        
+        if button == 'Cancelar':
+            return None
+        return int(values['numero'])
     
     def pegar_valor(self):
-        return float(input("Digite o valor: "))
+        layout = [
+        [sg.Text("-------- SELECIONAR VALOR --------", font=("Helvica", 25))],
+        [sg.Text('Insira o valor: ', font=("Helvica", 15)), sg.InputText('', key='valor')]]
+
+        self.__window = sg.Window('Sistema bancario').Layout(layout)
+        button, values = self.open()
+        self.close()
+        
+        if button == 'Cancelar':
+            return None
+        return int(values['valor'])
     
     def selecionar_conta_destino(self):
-        return int(input("Digite o numero da conta de destino: "))
+        layout = [
+        [sg.Text("-------- SELECIONAR CONTA DESTINO --------", font=("Helvica", 25))],
+        [sg.Text('Número da conta de destino: ', font=("Helvica", 15)), sg.InputText('', key='numero')]]
+
+        self.__window = sg.Window('Sistema bancario').Layout(layout)
+        button, values = self.open()
+        self.close()
+        
+        if button == 'Cancelar':
+            return None
+        return int(values['numero'])
     
     def mostrar_saldo(self, conta):
-        print(f"Saldo: {conta.saldo:.2f}")
+        return self.mostrar_mensagem(f"Saldo: {conta.saldo:.2f}")
+
+    def mostrar_mensagem(self, mensagem):
+        return super().mostrar_mensagem(mensagem)
 
     def mostrar_extrato(self, dados_extrato):
-        print("-"*10)
+        
         for i in dados_extrato:
-            print(f"Tipo {i.tipo.name.capitalize()}")
-            print(f"Valor: {i.valor:.2f}")
-            print(f"Data: {i.data_operacao.strftime('%d/%m/%Y %H:%M')}")
-            print("-"*10)
+            resultado = ''
+            resultado += f"Tipo {i.tipo.name.capitalize()}" + '\n'
+            resultado += f"Valor: {i.valor:.2f}" '\n'
+            resultado += f"Data: {i.data_operacao.strftime('%d/%m/%Y %H:%M')}" + '\n'
+        sg.Popup('-------- VISUALIZAR CONTA ----------', resultado)
+    
+    def close(self):
+        self.__window.Close()
+
+    def open(self):
+        button, values = self.__window.Read()
+        return button, values

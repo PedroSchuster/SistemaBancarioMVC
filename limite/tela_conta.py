@@ -22,13 +22,10 @@ class TelaConta(Tela):
     ]
         self.__window = sg.Window('Sistema bancario').Layout(layout)
         button, values = self.open()
-        opcao = self.verifica_opcao(button, values)
+        opcao = self.pegar_opcao(button, values)
         self.close()
         return opcao
 
-    def verifica_opcao(self, mensagem, inteiros_validos):
-        return super().pegar_opcao(mensagem, inteiros_validos)
-    
     def mostrar_conta(self, conta):
         resultado = ''
         resultado += f"Número: {conta.numero}" + '\n'
@@ -73,21 +70,6 @@ class TelaConta(Tela):
         return values
         
     
-    def buscar_conta(self):
-        layout = [
-      [sg.Text('-------- ALTERAR CONTA----------', font=("Helvica", 25))],
-      [sg.Text('Numero da conta::', size=(15, 1)), sg.InputText('', key='numero')],
-      [sg.Button('Confirmar'), sg.Cancel('Cancelar')]
-    ]
-
-        self.__window = sg.Window('Sistema de livros').Layout(layout)
-        button, values = self.open()
-        self.close()
-        
-        if button == 'Cancelar':
-            return None
-        return int(values['numero'])
-        
     def mostrar_mensagem(self,mensagem):
         return super().mostrar_mensagem(mensagem)
     

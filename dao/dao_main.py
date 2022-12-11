@@ -27,6 +27,9 @@ class DAO():
         except KeyError:
             pass
     
+    def get_one (self, index, key):
+        return self.__cache[key][index]
+
     def remove (self, index, key):
         try:
             #ultimo_valor = self.__cache[key][-1]
