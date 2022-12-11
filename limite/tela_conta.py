@@ -51,13 +51,14 @@ class TelaConta(Tela):
             return None
 
         return values['conta'][0]
-        
+
 
     def pegar_dados_conta(self):
         layout = [
       [sg.Text('-------- DADOS DA CONTA ----------', font=("Helvica", 25))],
       [sg.Text('Numero da conta::', size=(15, 1)), sg.InputText('', key='numero')],
-      [sg.Text('Tipo da conta::', size=(15, 1)), sg.InputText('', key='tipo')],
+      [sg.Text('Tipo da conta::', size=(15, 1))],
+      [sg.Combo(['corrente', 'poupanca'], default_value='corrente', key='tipo')],
       [sg.Text('Cpf do cliente: :', size=(15, 1)), sg.InputText('', key='cliente')],
       [sg.Text('Cpf do funcionario::', size=(15, 1)), sg.InputText('', key='funcionario')],
       [sg.Button('Confirmar'), sg.Cancel('Cancelar')]
