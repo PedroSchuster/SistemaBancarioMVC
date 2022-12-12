@@ -15,13 +15,6 @@ class TelaCliente(Tela):
                         [sg.Button('Confirmar'), sg.Cancel('Cancelar',key='0')]
                     ]
         __window = sg.Window('Clientes').Layout(layout)
-        """print("-------- CADASTRO DE CLIENTES --------")
-        print("1 -  Incluir novo cliente")
-        print("2 -  Excluir  cliente")
-        print("3 -  Listar  clientes")
-        print("4 -  Alterar  um cliente")
-        print("0 -  Voltar")
-        opcao = self.verifica_opcao("Escolha uma opcão: ", [1, 2, 3, 4, 0])"""
         button, values = __window.Read()
         opcao = 0
         if values['1']:
@@ -52,13 +45,6 @@ class TelaCliente(Tela):
         button, values = __window.Read()
         __window.close()
         return {"cpf": values[1], "nome": values[0], "telefone": values[2], "idade": values[3]}
-        """print("----- DADOS CLIENTE -----")
-        cpf = input("Cpf: ")
-        nome = input("Nome: ")
-        telefone = int(input("Telefone: "))
-        idade = int(input("Idade: "))"""
-
-        #return {"cpf": cpf, "nome": nome, "telefone": telefone, "idade": idade}
 
 
     def pegar_dados_endereco(self):
@@ -98,30 +84,7 @@ class TelaCliente(Tela):
                 
             button, values = __window.Read()
             __window.close()
-            """print("NOME: ", dados_cliente["nome"])
-            print("CPF: ", dados_cliente["cpf"])
-            print("TELEFONE: ", dados_cliente["telefone"])
-            print("IDADE: ", dados_cliente["idade"])
-            print("ENDEREÇOS: ")
-            for i in dados_cliente["enderecos"]:
-                print("-"*10)
-                print(f"Rua: {i.rua.capitalize()}")
-                print(f"Complemento: {i.complemento.capitalize()}")
-                print(f"Bairro: {i.bairro.capitalize()}")
-                print(f"Cidade: {i.cidade.capitalize()}")
-                print(f"Cep: {i.cep.capitalize()}")
-
-            print("CONTAS: ")
-            for i in dados_cliente["contas"]:
-                print("-"*10)
-                print(f"Número: {i.numero}")
-                print(f"Tipo: {i.tipo.name.capitalize()}")
-                print(f"Funcionário: {i.funcionario.nome.capitalize()}")
-                print(f"Saldo: {i.saldo:.2f}")
-
-        else:
-            print("Cliente não encontrado!")"""
-
+            
 
     def seleciona_cliente(self):
 
@@ -134,9 +97,7 @@ class TelaCliente(Tela):
         button, values = __window.Read()
         __window.close()
         return values[0]
-        #cpf_cliente = int(input(" CPF do cliente que deseja selecionar: "))
-
-        #return cpf_cliente
+        
 
     def mostra_mensagem(self, msg):
 
@@ -149,5 +110,3 @@ class TelaCliente(Tela):
                 
         button, values = __window.Read()
         __window.close()
-
-        #print(msg)

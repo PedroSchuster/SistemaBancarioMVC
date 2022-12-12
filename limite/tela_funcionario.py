@@ -25,19 +25,10 @@ class TelaFuncionario(Tela):
             opcao = 2
         if values['3']:
             opcao = 3
-           
-        # cobre os casos de voltar, não clicar em nada e fechar janela, ou clicar cancelar
         if values['0'] or button in (None,'Cancelar'):
             opcao = 0
 
         __window.close()  
-        """print("-------- CADASTRO DE FUNCIONARIOS --------")
-        print("1 -  Incluir novo funcionario")
-        print("2 -  Excluir  funcionario")
-        print("3 -  Listar  funcionarios")
-        print("4 -  Alterar  um funcionario")
-        print("0 -  Voltar")
-        opcao = self.verifica_opcao("Escolha uma opcão: ", [1, 2, 3, 4, 0])"""
         return opcao
 
     def pega_dados_funcionario(self):
@@ -54,15 +45,8 @@ class TelaFuncionario(Tela):
         
         button, values = __window.Read()
         __window.close()
-        """print("-------- DADOS FUNCIONARIO ----------")
-        cpf = input("cpf: ")
-        nome = input("nome: ")
-        telefone = int(input("telefone:"))
-        matricula = int(input("matricula:"))"""
 
-        #return {"cpf": cpf, "nome": nome, "telefone": telefone, "matricula": matricula}
         return {"cpf": values[1], "nome": values[0], "telefone": values[2], "matricula": values[3]}
-
 
 
     def mostra_funcionario(self, dados_funcionario):
@@ -88,12 +72,7 @@ class TelaFuncionario(Tela):
                 
             button, values = __window.Read()
             __window.close()
-            """print("NOME: ", dados_funcionario["nome"])
-            print("CPF: ", dados_funcionario["cpf"])
-            print("TELEFONE: ", dados_funcionario["telefone"])
-
-        else:
-            print("Funcionario não encontrado!")"""
+            
 
     def seleciona_funcionario(self):
 
@@ -106,9 +85,7 @@ class TelaFuncionario(Tela):
         button, values = __window.Read()
         __window.close()    
         return values[0]
-        #cpf_funcionario = input(" CPF do funcionario que deseja selecionar: ")
-
-        #return cpf_funcionario
+        
 
     def mostra_mensagem(self, msg):
 
@@ -121,4 +98,4 @@ class TelaFuncionario(Tela):
                 
         button, values = __window.Read()
         __window.close()
-        #print(msg)
+        

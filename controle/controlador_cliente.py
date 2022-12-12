@@ -1,6 +1,7 @@
 from entidade.endereco import Endereco
 from limite.tela_cliente import TelaCliente
 from entidade.cliente import Cliente
+from dao.dao_main import DAO
 
 class ControladorCliente:
 
@@ -8,6 +9,7 @@ class ControladorCliente:
         self.__cliente = []
         self.__controlador_sistema = controlador_sistema
         self.__tela_cliente = TelaCliente()
+        self.__dao = DAO('clientes.pkl')
 
     def pega_cliente_por_cpf(self, cpf: int):
         for cliente in self.__cliente:
