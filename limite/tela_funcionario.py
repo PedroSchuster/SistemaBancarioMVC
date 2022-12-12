@@ -46,7 +46,7 @@ class TelaFuncionario(Tela):
         button, values = __window.Read()
         __window.close()
 
-        return {"cpf": values[1], "nome": values[0], "telefone": values[2], "matricula": values[3]}
+        return {"cpf": values[1], "nome": values[0], "telefone": int(values[2]), "matricula": int(values[3])}
 
 
     def mostra_funcionario(self, dados_funcionario):
@@ -54,7 +54,7 @@ class TelaFuncionario(Tela):
             layout = [
                             [sg.Text('NOME: '+dados_funcionario["nome"])],
                             [sg.Text('CPF: '+dados_funcionario["cpf"])],
-                            [sg.Text('TELEFONE: '+dados_funcionario["telefone"])],
+                            [sg.Text('TELEFONE: '+str(dados_funcionario["telefone"]))],
 
                             [sg.Button('OK',key='0')]
                         ]
