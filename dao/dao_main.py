@@ -23,12 +23,12 @@ class DAO():
 
     def get_list (self, key):
         try:
-            return self.__cache[key]
+            return self.__cache.get(key)
         except KeyError:
             pass
     
     def get_one (self, index, key):
-        return self.__cache[key][index]
+        return self.__cache.get(key)[index]
 
     def remove (self, index, key):
         try:
@@ -44,6 +44,7 @@ class DAO():
     
     def modify (self, index, key, obj):
         try:
-            self.__cache[key][index] = obj
+            self.__cache.get(key)[index] = obj
+            self.__dump()
         except KeyError:
             pass

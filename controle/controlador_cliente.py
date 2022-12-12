@@ -25,7 +25,7 @@ class ControladorCliente:
 
         dados_endereco = self.__tela_cliente.pegar_dados_endereco()
 
-        self.add_endereco(cliente, dados_endereco["rua"], dados_endereco["bairro"], dados_endereco["complemento"],
+        cliente.add_endereco(cliente, dados_endereco["rua"], dados_endereco["bairro"], dados_endereco["complemento"],
                           dados_endereco["cidade"], dados_endereco["cep"])
 
         self.__cliente.append(cliente)
@@ -61,10 +61,6 @@ class ControladorCliente:
             self.lista_cliente()
         else:
             self.__tela_cliente.mostra_mensagem(" cliente não existente ")
-
-    def add_endereco(self, cliente, rua, complemento, bairro, cidade, cep):
-        novo_endereco = Endereco(rua, complemento, bairro, cidade, cep)
-        cliente.enderecos.append(novo_endereco)
 
     def retornar(self):
         self.__controlador_sistema.inicializa_sistema()

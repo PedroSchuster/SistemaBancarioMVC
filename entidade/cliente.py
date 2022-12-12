@@ -1,4 +1,5 @@
 from logging import raiseExceptions
+from entidade.endereco import Endereco
 from entidade.pessoa import Pessoa
 
 
@@ -17,8 +18,8 @@ class Cliente(Pessoa):
         if isinstance(idade, int):
             self.__idade = idade
 
-        self.contas = []
-        self.enderecos = []
+        self.__contas = []
+        self.__enderecos = []
 
     @property
     def idade(self) -> int:
@@ -30,3 +31,11 @@ class Cliente(Pessoa):
             self.__idade = idade
         else: 
             raise Exception(" Entre com um valor positivo! ")
+    
+
+    def add_conta(self, conta):
+        self.__contas.append(conta)
+
+    def add_endereco(self, rua, complemento, bairro, cidade, cep):
+        novo_endereco = Endereco(rua, complemento, bairro, cidade, cep)
+        self.__enderecos.append(novo_endereco)
