@@ -7,9 +7,6 @@ class TelaOperacao(Tela):
         self.__window = None
         sg.ChangeLookAndFeel('DarkTeal4')
    
-    def verifica_opcao(self, mensagem, inteiros_validos):
-        return super().verifica_opcao(mensagem, inteiros_validos)
-    
     def mostrar_mensagem(self, mensagem):
         return super().mostrar_mensagem(mensagem)
     
@@ -85,6 +82,9 @@ class TelaOperacao(Tela):
             resultado += f"Data: {i.data_operacao.strftime('%d/%m/%Y %H:%M')}" + '\n'
         sg.Popup('-------- VISUALIZAR CONTA ----------', resultado)
     
+    def pegar_opcao(self, botao, inteiros_validos):
+        return super().pegar_opcao(botao, inteiros_validos)
+
     def close(self):
         self.__window.Close()
 
