@@ -73,7 +73,9 @@ class TelaConta(Tela):
     def mostrar_mensagem(self,mensagem):
         return super().mostrar_mensagem(mensagem)
     
-    
+    def pegar_opcao(self, botao, inteiros_validos):
+        return super().pegar_opcao(botao, inteiros_validos)
+
     def close(self):
         self.__window.Close()
 
