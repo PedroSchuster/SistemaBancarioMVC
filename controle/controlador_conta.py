@@ -149,8 +149,12 @@ class ControladorConta:
                     break
 
                 opcoes[opcao]() 
-
+            
             except ValorInvalidoException as e:
                 self.__tela_conta.mostrar_mensagem(e.mensagem)
             except CadastroException as e:
                 self.__tela_conta.mostrar_mensagem(e.mensagem)  
+            except AttributeError:
+                self.__tela_conta.mostrar_mensagem("Escolhe um tipo de conta correto")  
+            except Exception:
+                self.__tela_conta.mostrar_mensagem("Ocorreu um erro inesperado!")  
