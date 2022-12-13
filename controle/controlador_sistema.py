@@ -44,9 +44,6 @@ class ControladorSistema:
 
                 opcoes[opcao]()
 
-            except ValueError:
-                self.__tela.mostrar_mensagem(
-                    "Valor inválido, verifique se o tipo do valor da entrada está correto!")
             except ValorInvalidoException as e:
                 self.__tela.mostrar_mensagem(e.mensagem)
             except Exception as e:
