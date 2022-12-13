@@ -131,4 +131,5 @@ class ControladorOperacao:
                 self.__tela.mostrar_mensagem(e.mensagem)
             except OperacaoException as e:
                 self.__tela.mostrar_mensagem(e.mensagem)
-                
+            except Exception:
+                self.__tela_conta.mostrar_mensagem("Ocorreu um erro inesperado!") 
