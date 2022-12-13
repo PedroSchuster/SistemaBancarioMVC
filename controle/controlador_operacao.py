@@ -12,7 +12,8 @@ class ControladorOperacao:
     def __init__(self, controlador_sistema) -> None:
         self.__controlador_sistema = controlador_sistema
         self.__tela = TelaOperacao()
-        self.__dao = DAO('operacoes.pkl')
+        self.__dao = controlador_sistema.dao
+
 
     
     def transacao(self):
@@ -95,8 +96,8 @@ class ControladorOperacao:
 
         if (not conta_origem):
             raise CadastroException("Conta de origem não encontrada")
-
-        self.__tela.mostrar_extrato(conta_origem.operacoes)
+        for i in conta_origem.operacoes:
+            self.__tela.mostrar_extrato(i)
     
     def consulta_saldo(self):
         index_origem = self.__controlador_sistema.controlador_conta.listar_contas()
@@ -123,10 +124,7 @@ class ControladorOperacao:
                     break
 
                 opcoes[opcao]()  
-            except ValueError:
-                self.__tela.mostrar_mensagem("Valor inválido, verifique se o tipo do valor da entrada está correto!")
-            except AttributeError:
-                self.__tela.mostrar_mensagem("Tipo de operação não encontrado!")
+                
             except ValorInvalidoException as e:
                 self.__tela.mostrar_mensagem(e.mensagem)
             except CadastroException as e:
@@ -134,4 +132,3 @@ class ControladorOperacao:
             except OperacaoException as e:
                 self.__tela.mostrar_mensagem(e.mensagem)
                 
- 

@@ -12,7 +12,7 @@ class Conta:
         self.__tipo = tipo
         self.__cliente = cliente
         self.__funcionario = funcionario
-        self.operacoes = []
+        self.__operacoes = []
         
     @property 
     def numero(self):
@@ -53,3 +53,10 @@ class Conta:
     @funcionario.setter
     def funcionario(self, funcionario):
         self.__funcionario = funcionario
+
+    @property
+    def operacoes(self):
+        return self.__operacoes
+        
+    def add_operacao(self, operacao):
+        self.__operacoes.append(operacao)

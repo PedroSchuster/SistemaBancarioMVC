@@ -28,23 +28,12 @@ class TelaOperacao(Tela):
         self.close()
         return opcao
 
-    def selecionar_conta(self):
-        layout = [
-        [sg.Text("-------- SELECIONAR CONTA --------", font=("Helvica", 25))],
-        [sg.Text('Número da conta: ', font=("Helvica", 15)), sg.InputText('', key='numero')]]
-
-        self.__window = sg.Window('Sistema bancario').Layout(layout)
-        button, values = self.open()
-        self.close()
-        
-        if button == 'Cancelar':
-            return None
-        return int(values['numero'])
     
     def pegar_valor(self):
         layout = [
         [sg.Text("-------- SELECIONAR VALOR --------", font=("Helvica", 25))],
-        [sg.Text('Insira o valor: ', font=("Helvica", 15)), sg.InputText('', key='valor')]]
+        [sg.Text('Insira o valor: ', font=("Helvica", 15)), sg.InputText('', key='valor')],
+        [sg.Button('Confirmar'), sg.Cancel('Cancelar')]]
 
         self.__window = sg.Window('Sistema bancario').Layout(layout)
         button, values = self.open()
@@ -73,13 +62,12 @@ class TelaOperacao(Tela):
     def mostrar_mensagem(self, mensagem):
         return super().mostrar_mensagem(mensagem)
 
-    def mostrar_extrato(self, dados_extrato):
+    def mostrar_extrato(self, operacao):
         
-        for i in dados_extrato:
-            resultado = ''
-            resultado += f"Tipo {i.tipo.name.capitalize()}" + '\n'
-            resultado += f"Valor: {i.valor:.2f}" '\n'
-            resultado += f"Data: {i.data_operacao.strftime('%d/%m/%Y %H:%M')}" + '\n'
+        resultado = ''
+        resultado += f"Tipo: {operacao.tipo.name.capitalize()}" + '\n'
+        resultado += f"Valor: {operacao.valor:.2f}" '\n'
+        resultado += f"Data: {operacao.data_operacao.strftime('%d/%m/%Y %H:%M')}" + '\n'
         sg.Popup('-------- VISUALIZAR CONTA ----------', resultado)
     
     def pegar_opcao(self, botao, inteiros_validos):

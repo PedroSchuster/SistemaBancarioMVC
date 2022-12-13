@@ -13,7 +13,7 @@ class ControladorConta:
         self.__controlador_sistema = controlador_sistema
         self.__contas = []
         self.__tela_conta = TelaConta()
-        self.__dao = DAO('contas.pkl')
+        self.__dao = controlador_sistema.dao
 
     def incluir_conta(self):
         dados_conta = self.__tela_conta.pegar_dados_conta()
@@ -24,18 +24,19 @@ class ControladorConta:
         if (not dados_conta["cliente"] or not dados_conta["funcionario"]
             or not dados_conta["tipo"] or not dados_conta["numero"]):
             raise CadastroException("Há campos para serem preenchidos!")
-            
-        cliente = self.__controlador_sistema.controlador_cliente.pega_cliente_por_cpf(dados_conta["cliente"])
+
+        index_cliente =  self.__controlador_sistema.controlador_cliente.pega_cliente_por_cpf(dados_conta["cliente"])
+        cliente = self.__dao.get_one(index_cliente, 'clientes') 
         
         if (not cliente):
             raise CadastroException("Cliente não encontrado")
         
-        funcionario = self.__controlador_sistema.controlador_funcionario.pega_funcionario_por_cpf(dados_conta["funcionario"])
+        funcionario = self.__dao.get_one(self.__controlador_sistema.controlador_funcionario.pega_funcionario_por_cpf(dados_conta["funcionario"]), 'funcionarios')
         
         if (not funcionario):
             raise CadastroException("Funcionário não encontrado")
         
-        if (self.pegar_contar_por_numero(int(dados_conta["numero"]))):
+        if (self.pegar_contar_por_numero(int(dados_conta["numero"])) is not None):
            raise CadastroException("Cadastro duplicado!")
 
         conta = Conta(int(dados_conta["numero"]), TipoConta[dados_conta["tipo"]],
@@ -46,6 +47,7 @@ class ControladorConta:
             if (isinstance(conta,Conta)):
                 self.__dao.add('contas', conta)
                 cliente.add_conta(conta)
+                self.__dao.modify(index_cliente, 'clientes', cliente)
                 
         else:
             raise CadastroException("Não foi possível registrar essa conta ao cliente cadastrado")
@@ -66,13 +68,13 @@ class ControladorConta:
         self.__tela_conta.mostrar_mensagem("Novos dados da conta: ")
         dados_conta = self.__tela_conta.pegar_dados_conta()
         
-        cliente = self.__controlador_sistema.controlador_cliente.pega_cliente_por_cpf(dados_conta["cliente"])
-        
+        cliente = self.__dao.get_one( self.__controlador_sistema.controlador_cliente.pega_cliente_por_cpf(dados_conta["cliente"]), 'clientes')
+
         if (not cliente):
             raise CadastroException("Cliente não encontrado")
         
-        funcionario = self.__controlador_sistema.controlador_funcionario.pega_funcionario_por_cpf(dados_conta["funcionario"])
-        
+        funcionario = self.__dao.get_one(self.__controlador_sistema.controlador_funcionario.pega_funcionario_por_cpf(dados_conta["funcionario"]), 'funcionarios')
+
         if (not funcionario):
             raise CadastroException("Funcionario não encontrado")
         
@@ -92,6 +94,14 @@ class ControladorConta:
         index = self.listar_contas()
         if (index == None):
             return 
+
+        conta = self.__dao.get_one(index, 'contas')
+        cliente = conta.cliente
+        lista_clientes = self.__dao.get_list('clientes')
+        index_cliente = lista_clientes.index(cliente)
+        cliente.remove_conta(conta)
+
+        self.__dao.modify(index_cliente, 'clientes', cliente)
         self.__dao.remove(index, 'contas')
         return self.__tela_conta.mostrar_mensagem("Conta excluida com sucesso!")
                 
@@ -122,9 +132,11 @@ class ControladorConta:
                         return i
         return None
         
-    def calculo_poupanca(self, conta):
+    def calculo_poupanca(self,conta):
+        index = self.__contas.index(conta)
         while True:
             conta.saldo *= 1.005
+            self.__dao.modify(index,'contas',conta)
             time.sleep(5)
 
     def abre_tela(self):

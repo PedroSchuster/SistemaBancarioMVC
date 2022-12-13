@@ -3,12 +3,14 @@ from controle.controlador_cliente import ControladorCliente
 from controle.controlador_funcionario import ControladorFuncionario
 from controle.controlador_conta import ControladorConta
 from controle.controlador_operacao import ControladorOperacao
+from dao.dao_main import DAO
 from excecoes.valor_invalido_exception import ValorInvalidoException
 from limite.tela_sistema import TelaSistema
 
 
 class ControladorSistema:
     def __init__(self) -> None:
+        self.__dao = DAO('sistema.pkl')
         self.__controlador_operacao = ControladorOperacao(self)
         self.__controlador_conta = ControladorConta(self)
         self.__controlador_cliente = ControladorCliente(self)
@@ -26,6 +28,10 @@ class ControladorSistema:
     @property
     def controlador_funcionario(self):
         return self.__controlador_funcionario
+
+    @property 
+    def dao(self):
+        return self.__dao
 
     def inicializa_sistema(self):
         opcoes = {1: self.cadastrar_clientes, 2: self.cadastrar_funcionarios,

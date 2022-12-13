@@ -7,7 +7,6 @@ class Cliente():
     def __init__(self, nome: str, cpf: str, telefone: int, idade: int):
         if not isinstance(nome, str):
             raise Exception(" Nome inválido! Digite apenas letras! ")
-
         if not isinstance(telefone, int):
             raise Exception(" Telefone inválido! Digite apenas números! ")
         if not isinstance(idade, int):
@@ -67,9 +66,11 @@ class Cliente():
         else: 
             raise Exception(" Entre com um valor positivo! ")
     
-    
     def add_conta(self, conta):
         self.__contas.append(conta)
+
+    def remove_conta(self, conta):
+        self.__contas.remove(conta)
 
     def add_endereco(self, rua, complemento, bairro, cidade, cep):
         novo_endereco = Endereco(rua, complemento, bairro, cidade, cep)

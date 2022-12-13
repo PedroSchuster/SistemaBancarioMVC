@@ -16,7 +16,7 @@ class TelaConta(Tela):
       [sg.Radio("Cadastrar conta", "RD1", key='1')],
       [sg.Radio("Alterar cadastro", "RD1", key='2')],
       [sg.Radio("Excluir cadastro", "RD1", key='3')],
-      [sg.Radio("Listar contas", "RD1", key='4')],
+      [sg.Radio("Visualizar conta", "RD1", key='4')],
       [sg.Radio('Retornar', "RD1", key='0')],
       [sg.Button('Confirmar'), sg.Cancel('Cancelar')]
     ]
@@ -37,7 +37,7 @@ class TelaConta(Tela):
 
     def listar_contas(self, list):
         while True:
-            layout = [[sg.Text('Choose additional Facilities',size=(30, 1), font='Lucida',justification='left')],
+            layout = [[sg.Text('Selecione uma conta',size=(30, 1), font='Lucida',justification='left')],
          [sg.Listbox(values=list, key='conta', size=(30, 6))],
         [sg.Button('Confirmar'), sg.Cancel('Cancelar')]]
             self.__window = sg.Window('Sistema bancario').Layout(layout)
@@ -57,8 +57,8 @@ class TelaConta(Tela):
     def pegar_dados_conta(self):
         layout = [
       [sg.Text('-------- DADOS DA CONTA ----------', font=("Helvica", 25))],
-      [sg.Text('Numero da conta::', size=(15, 1)), sg.InputText('', key='numero')],
-      [sg.Text('Tipo da conta::', size=(15, 1))],
+      [sg.Text('Numero da conta:', size=(15, 1)), sg.InputText('', key='numero')],
+      [sg.Text('Tipo da conta:', size=(15, 1))],
       [sg.Combo(['corrente', 'poupanca'], default_value='corrente', key='tipo')],
       [sg.Text('Cpf do cliente: :', size=(15, 1)), sg.InputText('', key='cliente')],
       [sg.Text('Cpf do funcionario::', size=(15, 1)), sg.InputText('', key='funcionario')],
