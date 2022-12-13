@@ -14,6 +14,5 @@ class Tela(ABC):
     def mostrar_mensagem(self,mensagem):
         sg.Popup('-------- AVISO ----------', mensagem)
 
-
     def tela_opcoes(self):
         return self.mostrar_mensagem("Tela não encontrada")

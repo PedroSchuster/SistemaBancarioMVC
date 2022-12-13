@@ -36,17 +36,21 @@ class TelaConta(Tela):
         sg.Popup('-------- VISUALIZAR CONTA ----------', resultado)
 
     def listar_contas(self, list):
-        layout = [[sg.Text('Choose additional Facilities',size=(30, 1), font='Lucida',justification='left')],
+        while True:
+            layout = [[sg.Text('Choose additional Facilities',size=(30, 1), font='Lucida',justification='left')],
          [sg.Listbox(values=list, key='conta', size=(30, 6))],
         [sg.Button('Confirmar'), sg.Cancel('Cancelar')]]
+            self.__window = sg.Window('Sistema bancario').Layout(layout)
+            button, values = self.open()
+            self.close()
+            
+            if button == 'Cancelar':
+                return None
 
-        self.__window = sg.Window('Sistema bancario').Layout(layout)
-        button, values = self.open()
-        self.close()
-        
-        if button == 'Cancelar':
-            return None
-
+            if len(values['conta']) == 0:
+                self.mostrar_mensagem("Selecione uma conta!")
+            else:
+                break
         return values['conta'][0]
 
 

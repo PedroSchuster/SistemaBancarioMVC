@@ -18,14 +18,13 @@ class ControladorConta:
     def incluir_conta(self):
         dados_conta = self.__tela_conta.pegar_dados_conta()
         
-        if (dados_conta == None):
+        if (not dados_conta):
             return
 
         if (not dados_conta["cliente"] or not dados_conta["funcionario"]
             or not dados_conta["tipo"] or not dados_conta["numero"]):
             raise CadastroException("Há campos para serem preenchidos!")
             
-
         cliente = self.__controlador_sistema.controlador_cliente.pega_cliente_por_cpf(dados_conta["cliente"])
         
         if (not cliente):
@@ -36,7 +35,7 @@ class ControladorConta:
         if (not funcionario):
             raise CadastroException("Funcionário não encontrado")
         
-        if (self.pegar_contar_por_numero(dados_conta["numero"])[1]):
+        if (self.pegar_contar_por_numero(int(dados_conta["numero"]))):
            raise CadastroException("Cadastro duplicado!")
 
         conta = Conta(int(dados_conta["numero"]), TipoConta[dados_conta["tipo"]],
@@ -46,7 +45,7 @@ class ControladorConta:
             or len(cliente.contas) == 0):
             if (isinstance(conta,Conta)):
                 self.__dao.add('contas', conta)
-                cliente.contas.append(conta)
+                cliente.add_conta(conta)
                 
         else:
             raise CadastroException("Não foi possível registrar essa conta ao cliente cadastrado")
@@ -62,7 +61,7 @@ class ControladorConta:
         index = self.listar_contas()
 
         if (index == None):
-            raise CadastroException("Conta não encontrada")      
+            return    
         
         self.__tela_conta.mostrar_mensagem("Novos dados da conta: ")
         dados_conta = self.__tela_conta.pegar_dados_conta()
@@ -77,11 +76,7 @@ class ControladorConta:
         if (not funcionario):
             raise CadastroException("Funcionario não encontrado")
         
-        conta = Conta()
-        conta.numero = int(dados_conta["numero"])
-        conta.tipo = dados_conta["tipo"]
-        conta.cliente = cliente
-        conta.funcionario = funcionario
+        conta = Conta(int(dados_conta["numero"]), TipoConta[dados_conta["tipo"]], cliente, funcionario)
 
         if (isinstance(conta, Conta)):
             self.__dao.modify(index, 'contas', conta)
@@ -95,12 +90,9 @@ class ControladorConta:
     
     def excluir_conta(self):
         index = self.listar_contas()
-        
         if (index == None):
-            raise CadastroException("Conta não encontrada")   
-        
+            return 
         self.__dao.remove(index, 'contas')
-
         return self.__tela_conta.mostrar_mensagem("Conta excluida com sucesso!")
                 
     def listar_contas(self):
@@ -109,22 +101,25 @@ class ControladorConta:
         for i in self.__contas:
             lista_numeros.append(i.numero)
         if (self.__contas):
-            return self.pegar_contar_por_numero(self.__tela_conta.listar_contas(lista_numeros))[0]
+            return self.pegar_contar_por_numero(self.__tela_conta.listar_contas(lista_numeros))
         else:
             raise CadastroException("Nenhuma conta cadastrada")      
 
     
     def mostrar_conta(self):
         index = self.listar_contas()
+        if (index == None):
+            return
         return self.__tela_conta.mostrar_conta(self.__contas[index])
         
 
     def pegar_contar_por_numero(self, numero):
-        self.__contas = self.__dao.get_list('contas')
-        if self.__contas:
-            for i in range(len(self.__contas)) :
-                if self.__contas[i].numero == numero:
-                    return i, self.__contas[i]
+        if (numero):
+            self.__contas = self.__dao.get_list('contas')
+            if self.__contas:
+                for i in range(len(self.__contas)) :
+                    if self.__contas[i].numero == numero:
+                        return i
         return None
         
     def calculo_poupanca(self, conta):
@@ -142,8 +137,6 @@ class ControladorConta:
                     break
 
                 opcoes[opcao]() 
-
-       
 
             except ValorInvalidoException as e:
                 self.__tela_conta.mostrar_mensagem(e.mensagem)

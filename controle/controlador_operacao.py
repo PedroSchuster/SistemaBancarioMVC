@@ -16,16 +16,16 @@ class ControladorOperacao:
 
     
     def transacao(self):
-        conta_origem = self.__controlador_sistema.controlador_conta.pegar_contar_por_numero(self.__tela.selecionar_conta())[1]
-        index_origem = self.__controlador_sistema.controlador_conta.pegar_contar_por_numero(self.__tela.selecionar_conta())[0]
+        index_origem = self.__controlador_sistema.controlador_conta.listar_contas()
+        conta_origem = self.__dao.get_one(index_origem, "contas")
 
         if (not conta_origem):
             raise CadastroException("Conta de origem não encontrada")
         elif (conta_origem.tipo == TipoConta.poupanca):
             raise CadastroException("Não é possivel fazer transações com conta do tipo poupança")
 
-        conta_destino = self.__controlador_sistema.controlador_conta.pegar_contar_por_numero(self.__tela.selecionar_conta_destino())[1]
-        index_destino = self.__controlador_sistema.controlador_conta.pegar_contar_por_numero(self.__tela.selecionar_conta_destino())[0]
+        index_destino = self.__controlador_sistema.controlador_conta.listar_contas()
+        conta_destino = self.__dao.get_one(index_destino, "contas")
 
         if (not conta_destino):
             raise CadastroException("Conta de destino não encontrada")
@@ -40,24 +40,21 @@ class ControladorOperacao:
             raise OperacaoException(f"A conta {conta_origem.numero} não possui saldo suficiente")
         
         conta_origem.saldo -= valor
-        self.__dao.modify(index_origem, "contas", conta_origem)
-
         conta_destino.saldo += valor
-        self.__dao.modify(index_destino, "contas", conta_destino)
 
         operacao_origem = Operacao(datetime.now(), TipoOperacao.transacao, -valor)
         operacao_destino = Operacao(datetime.now(), TipoOperacao.transacao, valor)
         
-        self.registrar_operacao(operacao_origem, conta_origem)
-        self.registrar_operacao(operacao_destino, conta_destino)
+        self.registrar_operacao(operacao_origem, conta_origem, index_origem)
+        self.registrar_operacao(operacao_destino, conta_destino, index_destino)
 
         self.__tela.mostrar_mensagem("Transacao feito com sucesso! ")
         self.__tela.mostrar_mensagem(f"Novo saldo da conta {conta_origem.numero} é {conta_origem.saldo:.2f}")
         self.__tela.mostrar_mensagem(f"Novo saldo da conta {conta_destino.numero} é {conta_destino.saldo:.2f}")
     
     def saque(self):
-        conta_origem = self.__controlador_sistema.controlador_conta.pegar_contar_por_numero(self.__tela.selecionar_conta())[1]
-        index_origem = self.__controlador_sistema.controlador_conta.pegar_contar_por_numero(self.__tela.selecionar_conta())[0]
+        index_origem = self.__controlador_sistema.controlador_conta.listar_contas()
+        conta_origem = self.__dao.get_one(index_origem, "contas")
 
         if (not conta_origem):
             raise CadastroException("Conta de origem não encontrada")
@@ -71,13 +68,14 @@ class ControladorOperacao:
         self.__dao.modify(index_origem, "contas", conta_origem)
         
         operacao_origem = Operacao(datetime.now(), TipoOperacao.saque, -valor)
-        self.registrar_operacao(operacao_origem, conta_origem)
+        self.registrar_operacao(operacao_origem, conta_origem, index_origem)
 
         self.__tela.mostrar_mensagem("Saque feito com sucesso! ")
         self.__tela.mostrar_mensagem(f"Novo saldo da conta {conta_origem.numero} é {conta_origem.saldo:.2f}")
     
     def deposito(self):
-        conta_origem = self.__controlador_sistema.controlador_conta.pegar_contar_por_numero(self.__tela.selecionar_conta())
+        index_origem = self.__controlador_sistema.controlador_conta.listar_contas()
+        conta_origem = self.__dao.get_one(index_origem, "contas")
 
         if (not conta_origem):
             raise CadastroException("Conta de origem não encontrada")
@@ -86,13 +84,14 @@ class ControladorOperacao:
         conta_origem.saldo += valor 
         
         operacao_origem = Operacao(datetime.now(), TipoOperacao.deposito, valor)
-        self.registrar_operacao(operacao_origem, conta_origem)
+        self.registrar_operacao(operacao_origem, conta_origem, index_origem)
 
         self.__tela.mostrar_mensagem("Depósito feito com sucesso! ")
         self.__tela.mostrar_mensagem(f"Novo saldo da conta {conta_origem.numero} é {conta_origem.saldo:.2f}")
     
     def extrato(self):
-        conta_origem = self.__controlador_sistema.controlador_conta.pegar_contar_por_numero(self.__tela.selecionar_conta())
+        index_origem = self.__controlador_sistema.controlador_conta.listar_contas()
+        conta_origem = self.__dao.get_one(index_origem, "contas")
 
         if (not conta_origem):
             raise CadastroException("Conta de origem não encontrada")
@@ -100,7 +99,8 @@ class ControladorOperacao:
         self.__tela.mostrar_extrato(conta_origem.operacoes)
     
     def consulta_saldo(self):
-        conta_origem = self.__controlador_sistema.controlador_conta.pegar_contar_por_numero(self.__tela.selecionar_conta())
+        index_origem = self.__controlador_sistema.controlador_conta.listar_contas()
+        conta_origem = self.__dao.get_one(index_origem, "contas")
 
         if (not conta_origem):
             raise CadastroException("Conta de origem não encontrada")
@@ -108,8 +108,9 @@ class ControladorOperacao:
         self.__tela.mostrar_saldo(conta_origem)
 
 
-    def registrar_operacao(self, operacao, conta):
-        self.__dao.add("operacoes", operacao)
+    def registrar_operacao(self, operacao, conta, index):
+        conta.add_operacao(operacao)
+        self.__dao.modify(index, "contas", conta)
 
 
     def abre_tela(self):

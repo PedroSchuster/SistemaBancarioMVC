@@ -5,6 +5,7 @@ from limite.tela_funcionario import TelaFuncionario
 class ControladorFuncionario:
 
     def __init__(self, controlador_sistema):
+        #self.__tela_funcionario = TelaFuncionario()
         self.__funcionario = []
         self.__controlador_sistema = controlador_sistema
         self.__tela_funcionario = TelaFuncionario()
@@ -27,6 +28,17 @@ class ControladorFuncionario:
 
         self.__dao.add('funcionarios', funcionario)
 
+
+    #def incluir_funcionario(self):
+        #dados_funcionario = self.__tela_funcionario.pega_dados_funcionario()
+        #funcionario = Funcionario(
+            #dados_funcionario["nome"],
+            #dados_funcionario["cpf"],
+            #dados_funcionario["telefone"],
+            #dados_funcionario["matricula"]
+        #)
+
+        #self.__funcionario.append(funcionario)
 
     def excluir_funcionario(self):
         self.lista_funcionario()
@@ -71,6 +83,14 @@ class ControladorFuncionario:
                 return funcionario
             return "Funcionario não encontrado"
 
+    #def tela_inicial(self):
+        #caso = {0: self.retornar, 1: self.incluir_funcionario, 2: self.excluir_funcionario,
+                #3: self.lista_funcionario, 4: self.buscar_funcionario}
+
+        #while True:
+            #opcao = self.__tela_funcionario.exibe_opcoes()
+           # opcao_escolhida = caso[opcao]
+            #opcao_escolhida()
 
     def retornar(self):
         self.__controlador_sistema.inicializa_sistema()
